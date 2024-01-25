@@ -1,0 +1,10 @@
+customization:
+  distribution_code_name: Weasel
+  distribution_version: 0.9.29.1
+  generator: "Weasel::UIStyleSettings"
+  modified_time: "Wed Feb 12 09:16:25 2014"
+  rime_version: 1.1
+patch:
+  "style/color_scheme": aqua
+  "style/font_point": 12
+  "style/horizontal": true
