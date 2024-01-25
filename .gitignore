@@ -10,11 +10,8 @@ user.yaml
 installation.yaml
 default.custom.yaml
 
-# computer
-default.yaml
-
 # ibus-rime
-ibus_rime.yaml
+ibus_rime.custom.yaml
 
 # trime
 kuro.trime.custom.yaml
