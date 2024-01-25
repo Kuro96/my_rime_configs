@@ -15,9 +15,3 @@ default.yaml
 
 # ibus-rime
 ibus_rime.yaml
-
-# trime
-kuro.trime.custom.yaml
-kuro.trime.yaml
-tongwenfeng.trime.yaml
-trime.yaml
