@@ -16,6 +16,7 @@ schema:
       * Chewing - 新酷音
       * opencc - 開放中文轉換
   dependencies:
+    - melt_eng # 英文方案
     - chaizi # 参考 https://github.com/MaxChang3/rime-chaizi
 
 key_binder:

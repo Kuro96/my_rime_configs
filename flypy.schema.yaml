@@ -41,15 +41,6 @@ switches:
     reset: 0
     states: [ 。，, ．， ]
 
-#custom_phrase:
-#  db_class: stabledb
-#  dictionary: ""
-#  enable_completion: false
-#  enable_sentence: false
-#  initial_quality: 1
-#  user_dict: custom_phrase
-#customization: 902379129
-
 engine:
   processors:
     - ascii_composer
@@ -76,7 +67,7 @@ engine:
     - lua_translator@number_translator # 金额大小写
     - lua_translator@Chinese_lunar_calendar    # 农历
     - table_translator@melt_eng  # 英文输入（作为子翻译器，优先级需要比原生的低）
-    - reverse_lookup_translator@chaizi
+    - reverse_lookup_translator
   filters:
     - lua_filter@corrector
     - simplifier
@@ -114,38 +105,20 @@ reduce_english_filter:
 # 中国农历配置
 Chinese_lunar_calendar: lunar
 
-key_binder:
-  import_preset: default
+translator:
+  # 字典文件
+  dictionary: custom_dict.all
+  spelling_hints: 8              # corrector.lua ：为了让错音错字提示的 Lua 同时适配全拼双拼，将拼音显示在 comment 中
+  always_show_comments: true     # corrector.lua ：Rime 默认在 preedit 等于 comment 时取消显示 comment，这里强制一直显示，供 corrector.lua 做判断用。
+  preedit_format: []
+  initial_quality: 1.2
 
-chaizi:
-  tag: chaizi
-  dictionary: chaizi
-  enable_completion: true
-  prefix: "jj"
-  preedit_format:
-    - xform/([nljqxy])v/$1ü/
-  comment_format:
-    - xform/([nljqxy])v/$1ü/
-  tips: 〔拆字〕
+melt_eng:
+  dictionary: custom_dict_en.all # 英文词典
+  enable_sentence: false         # 关闭自动造句
+  enable_completion: false       # 关闭自动提示
+  initial_quality: 0.8
 
-reverse_lookup:
-  tags: [chaizi]
-  overwrite_comment: true
-  dictionary: dicts/rime_ice.8105
-
-punctuator:
-  full_shape:
-    "/": "、"
-  half_shape:
-    "/": "、"
-  import_preset: default
-recognizer:
-  import_preset: default
-  patterns:
-    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
-    uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
-    url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
-    chaizi: "jj[a-z]*'?$"
 speller:
   algebra:
     - "erase/^xx$/"
@@ -181,14 +154,33 @@ speller:
   alphabet: zyxwvutsrqponmlkjihgfedcba
   delimiter: " '"
 
-translator:
-  # 字典文件
-  dictionary: custom_dict.all
-  spelling_hints: 8              # corrector.lua ：为了让错音错字提示的 Lua 同时适配全拼双拼，将拼音显示在 comment 中
-  always_show_comments: true     # corrector.lua ：Rime 默认在 preedit 等于 comment 时取消显示 comment，这里强制一直显示，供 corrector.lua 做判断用。
-  preedit_format: []
-  initial_quality: 1.2
-  #dictionary: luna_pinyin.extended
-  #preedit_format:
-  #  {}
-  #prism: flypy
+
+punctuator:
+  import_preset: symbols
+  # 定义部分半角字符
+  half_shape:
+      "#": "#"
+      "*": "*"
+      '.' : ["。"]
+      "`": "`"
+      "~": "~"
+      "@": "@"
+      "=": "="
+      "/": ["/", "÷",]
+      '\': "、"
+      "_" : "──"
+      "'": {pair: ["「", "」"]}
+      "[": ["【", "["]
+      "]": ["】", "]"]
+      "$": ["¥", "$", "€", "£", "¢", "¤"]
+      "<": ["《", "〈", "«", "<"]
+      ">": ["》", "〉", "»", ">"]
+
+recognizer:
+  import_preset: default
+  patterns:
+    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
+    uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
+    url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
+    number: "^R[0-9]+[.]?[0-9]*"        # 响应 lua_translator@number_translator 脚本将自动获取第 2 个字符作为触发前缀
+    gregorian_to_lunar: "^N[0-9]{1,8}"  # 响应 lua_translator@Chinese_lunar_calendar 公历转农历，输入 N20240115 得到「二〇二四年腊月初五」，脚本将自动获取第 2 个字符作为触发前缀
