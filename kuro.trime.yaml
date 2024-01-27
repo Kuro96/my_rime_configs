@@ -59,10 +59,10 @@ style:
     - {start: "", click: LKCandidate, label: "▼", when: composing}
     - {start: "\n", label: "%s.", candidate: "%s", comment: " %s", end: "", sep: " "}
   liquid_keyboard_window: #液态键盘模式下显示的悬浮窗口组件
-    - {start: "", click: "space", label: " 空格 "}
+    - {start: "", click: "space", label: " ␣ "}
     - {start: "", click: "BackSpace", label: " ⌫ "}
-    - {start: "", click: "Return", label: " 回车 "}
-    - {start: "", click: "liquid_keyboard_exit", label: " 返回 "}
+    - {start: "", click: "Return", label: " ↵ "}
+    - {start: "", click: "liquid_keyboard_exit", label: " 🔙 "}
   key_font: symbol.ttf #键盘字型
   key_height: 55 #键高
   key_long_text_size: 14 #长标籤字号
@@ -400,7 +400,7 @@ preset_keys:
   Return: {label: enter_labels, send: Return}
   Return1: {label: Enter, send: Return }
   Hide: {label: 隐藏, send: BACK}
-  BackSpace: {label: 退格, repeatable: true, send: BackSpace}
+  BackSpace: {label: " ⌫ ", repeatable: true, send: BackSpace}
   space: {repeatable: false, functional: false, send: space}
   Escape: {label: Esc, send: Escape}
   Home: {label: 行首, send: Home}
@@ -475,9 +475,10 @@ preset_keys:
   TrimeCmp: {label: 同文组件, command: run, option: "com.osfans.trime/.Pref"} #运行程序指定组件: run 包名/组件名
   Homepage: {label: 同文主页, command: run, option: "https://github.com/osfans/trime"} #查看网页: run 网址
   CommitHomepage: {label: 同文网址, commit: https://github.com/osfans/trime} #直接上屏
-  Wiki: {label: 维基, command: run, option: "https://zh.wikipedia.org/wiki/%s"} #搜索网页: %s或者%1$s爲当前字符
-  Google: {label: 谷歌, command: run, option: "https://www.google.com/search?q=%s"} #搜索网页: %s或者%1$s爲当前字符
-  MoeDict: {label: 萌典, command: run, option: "https://www.moedict.tw/%3$s"} #搜索网页: %3$s爲光标前字符
+  Wiki: {label: 维基, command: run, option: "https://zh.wikipedia.org/wiki/%4$s"} #搜索网页: %s或者%1$s爲当前字符
+  Google: {label: 谷歌, command: run, option: "https://www.google.com/search?q=%4$s"} #搜索网页: %s或者%1$s爲当前字符
+  MoeGirl: {label: 萌娘, command: run, option: "https://zh.moegirl.org.cn/index.php?fulltext=1&search=%4$s"} #搜索网页: %3$s爲光标前字符
+  Bili: {label: B站, command: run, option: "bilibili://search/%4$s"}
   Baidu: {label: 百度搜索, command: run, option: "https://www.baidu.com/s?wd=%4$s"} #搜索网页: %4s爲光标前所有字符
   Zdic: {label: 汉典, command: run, option: "http://www.zdic.net/sousuo/?q=%1$s"} #搜索网页: %s或者%1$s爲当前字符
   Zdic2: {label: 汉典, command: run, option: "http://www.zdic.net/sousuo/?q=%2$s"} #搜索网页: %2$s爲当前输入的编码
@@ -494,323 +495,6 @@ preset_keys:
 
 preset_keyboards:
   default:
-    name: 预设40键
-    author: "osfans <waxaca@163.com>"
-    ascii_mode: 0
-    width: 10
-    height: 44
-    lock: true #切换程序时记忆键盘
-    keys:
-      - {click: '1', long_click: '!'}
-      - {click: '2', long_click: '@'}
-      - {click: '3', long_click: '#'}
-      - {click: '4', long_click: '$'}
-      - {click: '5', long_click: '%'}
-      - {click: '6', long_click: '^'}
-      - {click: '7', long_click: '&'}
-      - {click: '8', long_click: '*'}
-      - {click: '9', long_click: '('}
-      - {click: '0', long_click: ')'}
-      - {click: 'q', long_click: '_'}
-      - {click: 'w', long_click: '-'}
-      - {click: 'e', long_click: '+'}
-      - {click: 'r', long_click: '='}
-      - {click: 't', long_click: '|'}
-      - {click: 'y', long_click: '\'}
-      - {click: 'u', long_click: '['}
-      - {click: 'i', long_click: ']'}
-      - {click: 'o', long_click: '{'}
-      - {click: 'p', long_click: '}'}
-      - {click: 'a', long_click: select_all }
-      - {click: 's', long_click: Home}
-      - {click: 'd', long_click: End}
-      - {click: 'f', long_click: Page_Up}
-      - {click: 'g', long_click: Page_Down}
-      - {click: 'h', long_click: Left}
-      - {click: 'j', long_click: Down}
-      - {click: 'k', long_click: Up}
-      - {click: 'l', long_click: Right}
-      - {click: ';', long_click: ':'}
-      - {click: 'z', long_click: '`'}
-      - {click: 'x', long_click: cut}
-      - {click: 'c', long_click: copy}
-      - {click: 'v', long_click: paste}
-      - {click: 'b', long_click: '~'}
-      - {click: 'n', long_click: Insert}
-      - {click: 'm', long_click: Delete}
-      - {click: ',', long_click: '<'}
-      - {click: '.', long_click: '>'}
-      - {click: '/', long_click: '?'}
-      - {click: Shift_L}
-      - {click: Keyboard_symbols, long_click: Keyboard_number}
-      - {click: Mode_switch, long_click: Menu}
-      - {click: space, width: 30}
-      - {click: "'", long_click: '"'}
-      - {click: BackSpace, width: 15}
-      - {click: Return, composing: Return1, long_click: CommitComment, width: 15}
-  mini:
-    name: 精简键盘
-    author: "tumuyan"
-    ascii_mode: 0
-    width: 10
-    height: 44
-    keyboard_height: 120
-    lock: true #切换程序时记忆键盘
-    keys:
-      - {click: '1', long_click: '!'}
-      - {click: '2', long_click: '@'}
-      - {click: '3', long_click: '#'}
-      - {click: '4', long_click: '$'}
-      - {click: '5', long_click: '%'}
-      - {click: '6', long_click: '^'}
-      - {click: '7', long_click: '&'}
-      - {click: '8', long_click: '*'}
-      - {click: '9', long_click: '('}
-      - {click: '0', long_click: ')'}
-      - {click: Shift_L}
-      - {click: Keyboard_symbols, long_click: Keyboard_number}
-      - {click: "'", long_click: '"'}
-      - {click: '-', long_click: '_'}
-      - {click: '=', long_click: '+'}
-      - {click: ',', long_click: '<'}
-      - {click: '.', long_click: '>'}
-      - {click: '/', long_click: '?'}
-      - {click: Mode_switch, long_click: Menu}
-      - {click: Return, composing: Return1, long_click: CommitComment}
-  letter:
-    __include: /preset_keyboards/default
-    ascii_mode: 1
-    reset_ascii_mode: true  #显示键盘时重置为ascii_mode指定的状态
-    lock: false
-  qwerty0:
-    name: 预设36键
-    author: "osfans <waxaca@163.com>"
-    ascii_mode: 0
-    width: 10
-    height: 44
-    label_transform: uppercase #uppercase|none 中文模式下的字母标籤自动大写
-    lock: true
-    keys:
-    - {click: '1', long_click: '!'}
-    - {click: '2', long_click: '@'}
-    - {click: '3', long_click: '#'}
-    - {click: '4', long_click: '$'}
-    - {click: '5', long_click: '%'}
-    - {click: '6', long_click: '^'}
-    - {click: '7', long_click: '&'}
-    - {click: '8', long_click: '*'}
-    - {click: '9', long_click: '('}
-    - {click: '0', long_click: ')'}
-    - {click: 'q', long_click: '_'}
-    - {click: 'w', long_click: '-'}
-    - {click: 'e', long_click: '+'}
-    - {click: 'r', long_click: '='}
-    - {click: 't', long_click: '|'}
-    - {click: 'y', long_click: '\'}
-    - {click: 'u', long_click: '['}
-    - {click: 'i', long_click: ']'}
-    - {click: 'o', long_click: '{'}
-    - {click: 'p', long_click: '}'}
-    - {width: 5}
-    - {click: 'a', long_click: select_all }
-    - {click: 's', long_click: Home}
-    - {click: 'd', long_click: End}
-    - {click: 'f', long_click: Page_Up}
-    - {click: 'g', long_click: Page_Down}
-    - {click: 'h', long_click: Left}
-    - {click: 'j', long_click: Down}
-    - {click: 'k', long_click: ':'}
-    - {click: 'l', long_click: ';'}
-    - {width: 5}
-    - {click: Shift_L, has_menu: "'", width: 15}
-    - {click: 'z', long_click: '`'}
-    - {click: 'x', long_click: cut}
-    - {click: 'c', long_click: copy}
-    - {click: 'v', long_click: paste}
-    - {click: 'b', long_click: '~'}
-    - {click: 'n', long_click: '"'}
-    - {click: 'm', long_click: "MoeDict"}
-    - {click: BackSpace, width: 15}
-    - {click: Mode_switch, long_click: Menu, width: 15}
-    - {click: Keyboard_symbols, long_click: Keyboard_number}
-    - {click: ',', long_click: '<'}
-    - {click: space, width: 30}
-    - {click: '.', long_click: '>'}
-    - {click: '/', long_click: '?'}
-    - {click: Return, composing: Return1, long_click: CommitComment, width: 15}
-  qwerty_:
-    name: 预设30键
-    author: "osfans <waxaca@163.com>"
-    ascii_mode: 0
-    width: 10
-    height: 55
-    lock: true
-    keys:
-    - {click: 'q', long_click: '!', swipe_up: 1}
-    - {click: 'w', long_click: '@', swipe_up: 2}
-    - {click: 'e', long_click: '#', swipe_up: 3}
-    - {click: 'r', long_click: '$', swipe_up: 4}
-    - {click: 't', long_click: '%', swipe_up: 5}
-    - {click: 'y', long_click: '^', swipe_up: 6}
-    - {click: 'u', long_click: '&', swipe_up: 7}
-    - {click: 'i', long_click: '*', swipe_up: 8}
-    - {click: 'o', long_click: '(', swipe_up: 9}
-    - {click: 'p', long_click: ')', swipe_up: 0}
-    - {click: 'a', long_click: select_all, swipe_left: Left, swipe_right: Right, swipe_up: Up, swipe_down: Down}
-    - {click: 's', long_click: '~', swipe_left: Home, swipe_right: End, swipe_up: Page_Up, swipe_down: Page_Down}
-    - {click: 'd', long_click: '-', swipe_down: '_'}
-    - {click: 'f', long_click: '+', swipe_down: '='}
-    - {click: 'g', long_click: '\', swipe_down: '|'}
-    - {click: 'h', long_click: '[]{Left}', swipe_left: '[', swipe_right: ']'}
-    - {click: 'j', long_click: '{}{Left}', swipe_left: '{', swipe_right: '}'}
-    - {click: 'k', long_click: '"'}
-    - {click: 'l', long_click: "'"}
-    - {click: ';', long_click: ':'}
-    - {click: 'z', long_click: '`'}
-    - {click: 'x', long_click: cut}
-    - {click: 'c', long_click: copy}
-    - {click: 'v', long_click: paste}
-    - {click: 'b', long_click: Time, swipe_up: Date}
-    - {click: 'n', long_click: Insert}
-    - {click: 'm', long_click: Delete}
-    - {click: ',', long_click: '<'}
-    - {click: '.', long_click: '>'}
-    - {click: '/', long_click: '?'}
-    - {click: Shift_L}
-    - {click: Keyboard_symbols, long_click: Keyboard_number}
-    - {click: Mode_switch, long_click: Menu}
-    - {click: space, width: 40}
-    - {click: BackSpace, width: 15}
-    - {click: Return, composing: Return1, long_click: CommitComment, width: 15}
-  rime_mint:
-    name: 96魔改36键
-    author: "Kuro Latency"
-    ascii_mode: 0
-    columns: 10 #键盘列数，超过则自动换行，默认30列
-    width: 10
-    height: 54
-    lock: true
-    key_symbol_offset_x: 0
-    key_symbol_offset_y: 0
-    key_text_offset_x: 0
-    key_text_offset_y: 0
-    key_hint_offset_x: 0
-    key_hint_offset_y: 0
-    key_press_offset_x: 2
-    key_press_offset_y: 2
-    keys:
-      - {click: '1', long_click: '!'}
-      - {click: '2', long_click: '@'}
-      - {click: '3', long_click: '#'}
-      - {click: '4', long_click: '$'}
-      - {click: '5', long_click: '%'}
-      - {click: '6', long_click: '^'}
-      - {click: '7', long_click: '&'}
-      - {click: '8', long_click: '*'}
-      - {click: '9', long_click: '('}
-      - {click: '0', long_click: ')'}
-      - {click: 'q', long_click: '!', swipe_up: 1}
-      - {click: 'w', long_click: '@', swipe_up: 2}
-      - {click: 'e', long_click: '#', swipe_up: 3}
-      - {click: 'r', long_click: '$', swipe_up: 4}
-      - {click: 't', long_click: '%', swipe_up: 5}
-      - {click: 'y', long_click: '^', swipe_up: 6}
-      - {click: 'u', long_click: '&', swipe_up: 7}
-      - {click: 'i', long_click: '*', swipe_up: 8}
-      - {click: 'o', long_click: '(){Left}', swipe_up: 9}
-      - {click: 'p', long_click: 'Hide', swipe_up: 0}
-      - {width: 5}
-      - {click: 'a', long_click: select_all, swipe_left: Left, swipe_right: Right, swipe_up: Up, swipe_down: Down}
-      - {click: 's', long_click: '~', swipe_left: Home, swipe_right: End, swipe_up: Page_Up, swipe_down: Page_Down}
-      - {click: 'd', long_click: '-', swipe_down: '_'}
-      - {click: 'f', long_click: '+', swipe_down: '='}
-      - {click: 'g', long_click: '\', swipe_down: '|'}
-      - {click: 'h', long_click: '[]{Left}', swipe_left: '[', swipe_right: ']'}
-      - {click: 'j', long_click: '{}{Left}', swipe_left: '{', swipe_right: '}'}
-      - {click: 'k', long_click: ':'}
-      - {click: 'l', long_click: ';'}
-      - {width: 5}
-      - {click: Shift_L, send_bindings: false, width: 15}
-      - {click: 'z', long_click: '`'}
-      - {click: 'x', long_click: cut}
-      - {click: 'c', long_click: copy}
-      - {click: 'v', long_click: paste}
-      - {click: 'b', long_click: Time, swipe_up: Date}
-      - {click: 'n', long_click: '"'}
-      - {click: 'm', long_click: "'"}
-      - {click: BackSpace, swipe_left: Escape, width: 15, label: '⌫'}
-      - {click: Mode_switch, long_click: Menu, width: 15}
-      - {click: Keyboard_symbols, long_click: Keyboard_number}
-      - {click: ',', long_click: '<'}
-      - {click: space, width: 30}
-      - {click: '.', long_click: '>'}
-      - {click: '/', long_click: '?'}
-      - {click: Return, composing: Return1, long_click: CommitComment, width: 15}
-  flypy:
-    name: 96魔改36键带双拼提示
-    author: "Kuro Latency"
-    ascii_mode: 0
-    columns: 10 #键盘列数，超过则自动换行，默认30列
-    width: 10
-    height: 54
-    lock: true
-    key_symbol_offset_x: 0
-    key_symbol_offset_y: 0
-    key_text_offset_x: 0
-    key_text_offset_y: 0
-    key_hint_offset_x: 0
-    key_hint_offset_y: 0
-    key_press_offset_x: 2
-    key_press_offset_y: 2
-    keys:
-      - {click: '1', long_click: '!'}
-      - {click: '2', long_click: '@'}
-      - {click: '3', long_click: '#'}
-      - {click: '4', long_click: '$'}
-      - {click: '5', long_click: '%'}
-      - {click: '6', long_click: '^'}
-      - {click: '7', long_click: '&'}
-      - {click: '8', long_click: '*'}
-      - {click: '9', long_click: '('}
-      - {click: '0', long_click: ')'}
-      - {click: 'q', long_click: '!', swipe_up: 1, hint: 'iu'}
-      - {click: 'w', long_click: '@', swipe_up: 2, hint: 'ei'}
-      - {click: 'e', long_click: '#', swipe_up: 3, hint: 'e'}
-      - {click: 'r', long_click: '$', swipe_up: 4, hint: 'uan'}
-      - {click: 't', long_click: '%', swipe_up: 5, hint: '(uü)e'}
-      - {click: 'y', long_click: '^', swipe_up: 6, hint: 'un'}
-      - {click: 'u', long_click: '&', swipe_up: 7, hint: 'sh/u'}
-      - {click: 'i', long_click: '*', swipe_up: 8, hint: 'ch/i'}
-      - {click: 'o', long_click: '(){Left}', swipe_up: 9, hint: '[u]o'}
-      - {click: 'p', long_click: 'Hide', swipe_up: 0, hint: 'ie'}
-      - {width: 5}
-      - {click: 'a', long_click: select_all, swipe_left: Left, swipe_right: Right, swipe_up: Up, swipe_down: Down, hint: 'a'}
-      - {click: 's', long_click: '~', swipe_left: Home, swipe_right: End, swipe_up: Page_Up, swipe_down: Page_Down, hint: '[i]ong'}
-      - {click: 'd', long_click: '-', swipe_down: '_', hint: 'ai'}
-      - {click: 'f', long_click: '+', swipe_down: '=', hint: 'en'}
-      - {click: 'g', long_click: '\', swipe_down: '|', hint: 'eng'}
-      - {click: 'h', long_click: '[]{Left}', swipe_left: '[', swipe_right: ']', hint: 'ang'}
-      - {click: 'j', long_click: '{}{Left}', swipe_left: '{', swipe_right: '}', hint: 'an'}
-      - {click: 'k', long_click: ':', hint: 'uai/ing'}
-      - {click: 'l', long_click: ';', hint: '(iu)ang'}
-      - {width: 5}
-      - {click: Shift_L, send_bindings: false, width: 15}
-      - {click: 'z', long_click: '`', hint: 'ou'}
-      - {click: 'x', long_click: cut, hint: '(iu)a'}
-      - {click: 'c', long_click: copy, hint: 'ao'}
-      - {click: 'v', long_click: paste, hint: 'zh/ui/ü'}
-      - {click: 'b', long_click: Time, swipe_up: Date, hint: 'in'}
-      - {click: 'n', long_click: '"', hint: 'iao'}
-      - {click: 'm', long_click: "'", hint: 'ian'}
-      - {click: BackSpace, swipe_left: Escape, width: 15, label: '⌫'}
-      - {click: Mode_switch, long_click: Menu, width: 15}
-      - {click: Keyboard_symbols, long_click: Keyboard_number}
-      - {click: ',', long_click: '<'}
-      - {click: space, width: 30}
-      - {click: '.', long_click: '>'}
-      - {click: '/', long_click: '?'}
-      - {click: Return, composing: Return1, long_click: CommitComment, width: 15}
-  qwerty:
     name: 预设26键
     author: "osfans <waxaca@163.com>"
     ascii_mode: 0
@@ -864,6 +548,104 @@ preset_keyboards:
       - {click: '.', long_click: '>'}
       - {click: '/', long_click: '?'}
       - {click: Return, composing: Return1, long_click: CommitComment, width: 15}
+  mini:
+    name: 精简键盘
+    author: "tumuyan"
+    ascii_mode: 0
+    width: 10
+    height: 44
+    keyboard_height: 120
+    lock: true #切换程序时记忆键盘
+    keys:
+      - {click: '1', long_click: '!'}
+      - {click: '2', long_click: '@'}
+      - {click: '3', long_click: '#'}
+      - {click: '4', long_click: '$'}
+      - {click: '5', long_click: '%'}
+      - {click: '6', long_click: '^'}
+      - {click: '7', long_click: '&'}
+      - {click: '8', long_click: '*'}
+      - {click: '9', long_click: '('}
+      - {click: '0', long_click: ')'}
+      - {click: Shift_L}
+      - {click: Keyboard_symbols, long_click: Keyboard_number}
+      - {click: "'", long_click: '"'}
+      - {click: '-', long_click: '_'}
+      - {click: '=', long_click: '+'}
+      - {click: ',', long_click: '<'}
+      - {click: '.', long_click: '>'}
+      - {click: '/', long_click: '?'}
+      - {click: Mode_switch, long_click: Menu}
+      - {click: Return, composing: Return1, long_click: CommitComment}
+  letter:
+    __include: /preset_keyboards/default
+    ascii_mode: 1
+    reset_ascii_mode: true  #显示键盘时重置为ascii_mode指定的状态
+    lock: false
+  flypy:
+    name: 96魔改36键带双拼提示
+    author: "Kuro Latency"
+    ascii_mode: 0
+    columns: 10 #键盘列数，超过则自动换行，默认30列
+    width: 10
+    height: 54
+    lock: true
+    key_symbol_offset_x: 0
+    key_symbol_offset_y: 0
+    key_text_offset_x: 0
+    key_text_offset_y: 0
+    key_hint_offset_x: 0
+    key_hint_offset_y: 0
+    key_press_offset_x: 2
+    key_press_offset_y: 2
+    keys:
+      - {click: '1', long_click: '!'}
+      - {click: '2', long_click: '@'}
+      - {click: '3', long_click: '#'}
+      - {click: '4', long_click: '$'}
+      - {click: '5', long_click: '%'}
+      - {click: '6', long_click: '^'}
+      - {click: '7', long_click: '&'}
+      - {click: '8', long_click: '*'}
+      - {click: '9', long_click: '('}
+      - {click: '0', long_click: ')'}
+      - {click: 'q', long_click: 'Google', swipe_up: 1, hint: 'iu'}
+      - {click: 'w', long_click: 'Wiki', swipe_up: 2, hint: 'ei'}
+      - {click: 'e', long_click: 'MoeGirl', swipe_up: 3, hint: 'e'}
+      - {click: 'r', long_click: 'Bili', swipe_up: 4, hint: 'uan'}
+      - {click: 't', long_click: '|', swipe_up: 5, hint: '(uü)e'}
+      - {click: 'y', long_click: '[', swipe_up: 6, hint: 'un'}
+      - {click: 'u', long_click: ']', swipe_up: 7, hint: 'sh/u'}
+      - {click: 'i', long_click: '{', swipe_up: 8, hint: 'ch/i'}
+      - {click: 'o', long_click: '}', swipe_up: 9, hint: '[u]o'}
+      - {click: 'p', long_click: 'Hide', swipe_up: 0, hint: 'ie'}
+      - {width: 5}
+      - {click: 'a', long_click: select_all, swipe_left: Left, swipe_right: Right, swipe_up: Up, swipe_down: Down, hint: 'a'}
+      - {click: 's', long_click: '~', swipe_left: Home, swipe_right: End, swipe_up: Page_Up, swipe_down: Page_Down, hint: '[i]ong'}
+      - {click: 'd', long_click: '-', swipe_down: '_', hint: 'ai'}
+      - {click: 'f', long_click: '+', swipe_down: '=', hint: 'en'}
+      - {click: 'g', long_click: '\', swipe_down: '|', hint: 'eng'}
+      - {click: 'h', long_click: '「', swipe_left: '[', swipe_right: ']', hint: 'ang'}
+      - {click: 'j', long_click: '」', swipe_left: '{', swipe_right: '}', hint: 'an'}
+      - {click: 'k', long_click: ':', hint: 'uai/ing'}
+      - {click: 'l', long_click: ';', hint: '(iu)ang'}
+      - {width: 5}
+      - {click: Shift_L, send_bindings: false, width: 15}
+      - {click: 'z', long_click: '`', hint: 'ou'}
+      - {click: 'x', long_click: cut, hint: '(iu)a'}
+      - {click: 'c', long_click: copy, hint: 'ao'}
+      - {click: 'v', long_click: paste, hint: 'zh/ui/ü'}
+      - {click: 'b', long_click: Time, swipe_up: Date, hint: 'in'}
+      - {click: 'n', long_click: '"', hint: 'iao'}
+      - {click: 'm', long_click: "'", hint: 'ian'}
+      - {click: BackSpace, swipe_left: Escape, width: 15, label: '⌫'}
+      - {click: Keyboard_number, long_click: Menu, width: 15}
+      - {click: Keyboard_symbols, long_click: Theme_settings}
+      - {click: ',', long_click: '<'}
+      - {click: space, width: 30}
+      - {click: '.', long_click: '>'}
+      - {click: '/', long_click: '?'}
+      - {click: Return, composing: Return1, long_click: liquid_keyboard_clipboard, width: 15}
   number:
     name: 预设数字
     author: "osfans <waxaca@163.com>"
@@ -881,14 +663,14 @@ preset_keyboards:
       - {click: 'KP_6'}
       - {click: '%'}
       - {click: '*'}
-      - {click: 'KP_7'}
-      - {click: 'KP_8'}
+      - {click: 'KP_7', long_click: select_all}
+      - {click: 'KP_8', long_click: copy_all}
       - {click: 'KP_9'}
       - {click: ':'}
       - {click: '/'}
-      - {click: '±'}
-      - {click: 'KP_0'}
-      - {click: '.'}
+      - {click: '±', long_click: cut}
+      - {click: 'KP_0', long_click: copy}
+      - {click: '.', long_click: paste}
       - {click: ','}
       - {click: '='}
       - {click: Keyboard_default, long_click: Keyboard_symbols}
@@ -939,8 +721,8 @@ preset_keyboards:
       - {click: '〉', long_click: '》', ascii: '>'}
       - {click: '“', ascii: '"', long_click: '‘'}
       - {click: '”', ascii: "'", long_click: '’'}
-      - {click: '，', ascii: ',', long_click: one_hand_switch_1}
-      - {click: '？', ascii: '?', long_click: one_hand_switch_3}
+      - {click: '，', ascii: ',', long_click: Hint_switch}
+      - {click: '？', ascii: '?', long_click: VOICE_ASSIST}
       - {click: BackSpace, long_click: Escape}
       - {click: Keyboard_default, long_click: Menu, width: 15}
       - {click: Keyboard_number, long_click: Color_switch}
