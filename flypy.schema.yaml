@@ -4,13 +4,13 @@
 schema:
   schema_id: flypy
   name: "小鹤双拼"
-  version: 0.16.custom.902379129
+  version: 0.18.kuro
   author:
-    - "double pinyin layout by 鶴"
-    - "Rime schema by 佛振 <chen.sst@gmail.com>"
-    - "Custom schema by 刘浏 <liu@wentao.org>"
+    - double pinyin layout by 鶴
+    - Rime schema by 佛振 <chen.sst@gmail.com>
+    - mod by kuro
   description: |
-    小鹤双拼,自定义版本。
+    小鹤双拼96魔改版本。
   dependencies:
     - melt_eng # 英文方案
 
@@ -54,7 +54,6 @@ engine:
   segmentors:
     - ascii_segmentor
     - matcher
-    - affix_segmentor@chaizi
     - abc_segmentor
     - punct_segmentor
     - fallback_segmentor
@@ -120,6 +119,8 @@ melt_eng:
   initial_quality: 0.8
 
 speller:
+  alphabet: zyxwvutsrqponmlkjihgfedcba
+  delimiter: " '"
   algebra:
     - "erase/^xx$/"
     - "derive/^([jqxy])u$/$1v/"
@@ -151,9 +152,6 @@ speller:
     - "xform/ui$/V/"
     - "xform/in$/B/"
     - "xlit/QWRTYUIOPSDFGHJKLZXCVBNM/qwrtyuiopsdfghjklzxcvbnm/"
-  alphabet: zyxwvutsrqponmlkjihgfedcba
-  delimiter: " '"
-
 
 punctuator:
   import_preset: symbols
