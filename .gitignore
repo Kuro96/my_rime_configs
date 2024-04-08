@@ -2,6 +2,7 @@ fonts/
 build/
 *.userdb/
 trash/
+sync/
 
 *.ocd2
 user.yaml
