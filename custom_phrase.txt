@@ -15,7 +15,8 @@
 # 雖然文本碼表編輯較爲方便，但不適合導入大量條目
 #
 # no comment
- 
+
 中体彩科技	cslc	1
 liuwentao	liuwentao	1
 i6wentao	iw	1
+QuQ	quq	1
