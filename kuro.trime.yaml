@@ -212,11 +212,7 @@ liquid_keyboard:
   single_width: 60    #single类型的按键宽度
   vertical_gap: 1     #纵向按键间隙
   margin_x: 0.5         #左右按键间隙的1/2
-  keyboards: [exit, clipboard, kuro, candidate, symbol, unit, jp, grease, yanwenzi, symbollist]  #tab列表
-  exit:
-    name: 返回
-    type: NO_KEY
-    keys: EXIT
+  keyboards: [clipboard, kuro, candidate, symbol, unit, jp, grease, yanwenzi, symbollist]  #tab列表
   kuro:
     name: 自定
     type: SINGLE
@@ -639,8 +635,8 @@ preset_keyboards:
       - {click: 'n', long_click: '"', hint: 'iao'}
       - {click: 'm', long_click: "'", hint: 'ian'}
       - {click: BackSpace, swipe_left: Escape, width: 15, label: '⌫'}
-      - {click: Keyboard_number, long_click: Menu, width: 15}
-      - {click: Keyboard_symbols, long_click: Theme_settings}
+      - {click: Mode_switch, long_click: Punct_switch, width: 15}
+      - {click: Keyboard_symbols, long_click: Menu}
       - {click: ',', long_click: '<'}
       - {click: space, width: 30}
       - {click: '.', long_click: '>'}
