@@ -2,7 +2,7 @@ customization:
   distribution_code_name: trime
   distribution_version: "nightly-3-gce258153"
   generator: "Rime::SwitcherSettings"
-  modified_time: "Tue Aug 13 00:15:00 2024"
+  modified_time: "Fri Sep 27 10:48:09 2024"
   rime_version: 1.11.1
 patch:
   "ascii_composer/good_old_caps_lock": true
@@ -15,6 +15,7 @@ patch:
   "menu/page_size": 100
   schema_list:
     - {schema: flypy}
+    - {schema: japanese}
   "switcher/hotkeys":
     - "Control+grave"
   "switcher/save_options":

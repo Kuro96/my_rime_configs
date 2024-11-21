@@ -56,7 +56,7 @@ style:
   window: #悬浮窗口组件
     - {start: "", move: "🐕<", end: ""}
     - {start: "", composition: "%s", end: "", letter_spacing: 0} #letter_spacing需要>=Android5.0。TODO: 不爲0时，会导致不换行的问题
-    - {start: "", click: LKCandidate, label: "▼", when: composing}
+    - {start: "", click: "Hide", label: "▼", when: composing}
     - {start: "\n", label: "%s.", candidate: "%s", comment: " %s", end: "", sep: " "}
   liquid_keyboard_window: #液态键盘模式下显示的悬浮窗口组件
     - {start: "", click: "space", label: " ␣ "}
@@ -218,6 +218,7 @@ liquid_keyboard:
     type: SINGLE
     keys:
       - { click: "\n", label: "换行" }
+      - {click: "liquid_keyboard_exit", label: " 🔙 "}
   tabs:
     name: 更多
     type: TABS
@@ -516,7 +517,7 @@ preset_keyboards:
       - {click: 'u', long_click: '&', swipe_up: 7}
       - {click: 'i', long_click: '*', swipe_up: 8}
       - {click: 'o', long_click: '(){Left}', swipe_up: 9}
-      - {click: 'p', long_click: 'Hide', swipe_up: 0, swipe_down: LKCandidate}
+      - {click: 'p', long_click: 'Hide', swipe_up: 0}
       - {width: 5}
       - {click: 'a', long_click: select_all, swipe_left: Left, swipe_right: Right, swipe_up: Up, swipe_down: Down}
       - {click: 's', long_click: '~', swipe_left: Home, swipe_right: End, swipe_up: Page_Up, swipe_down: Page_Down}
@@ -621,8 +622,8 @@ preset_keyboards:
       - {click: 'd', long_click: '-', swipe_down: '_', hint: 'ai'}
       - {click: 'f', long_click: '+', swipe_down: '=', hint: 'en'}
       - {click: 'g', long_click: '\', swipe_down: '|', hint: 'eng'}
-      - {click: 'h', long_click: '「', swipe_left: '[', swipe_right: ']', hint: 'ang'}
-      - {click: 'j', long_click: '」', swipe_left: '{', swipe_right: '}', hint: 'an'}
+      - {click: 'h', long_click: '「', hint: 'ang'}
+      - {click: 'j', long_click: '」', hint: 'an'}
       - {click: 'k', long_click: ':', hint: 'uai/ing'}
       - {click: 'l', long_click: ';', hint: '(iu)ang'}
       - {width: 5}
@@ -635,8 +636,8 @@ preset_keyboards:
       - {click: 'n', long_click: '"', hint: 'iao'}
       - {click: 'm', long_click: "'", hint: 'ian'}
       - {click: BackSpace, swipe_left: Escape, width: 15, label: '⌫'}
-      - {click: Mode_switch, long_click: Punct_switch, width: 15}
-      - {click: Keyboard_symbols, long_click: Menu}
+      - {click: Mode_switch, long_click: Menu, width: 15}
+      - {click: Keyboard_symbols, long_click: Punct_switch}
       - {click: ',', long_click: '<'}
       - {click: space, width: 30}
       - {click: '.', long_click: '>'}
