@@ -619,9 +619,9 @@ preset_keyboards:
       - {width: 5}
       - {click: 'a', long_click: select_all, swipe_left: Left, swipe_right: Right, swipe_up: Up, swipe_down: Down, hint: 'a'}
       - {click: 's', long_click: '~', swipe_left: Home, swipe_right: End, swipe_up: Page_Up, swipe_down: Page_Down, hint: '[i]ong'}
-      - {click: 'd', long_click: '-', swipe_down: '_', hint: 'ai'}
-      - {click: 'f', long_click: '+', swipe_down: '=', hint: 'en'}
-      - {click: 'g', long_click: '\', swipe_down: '|', hint: 'eng'}
+      - {click: 'd', long_click: '-', hint: 'ai'}
+      - {click: 'f', long_click: '+', hint: 'en'}
+      - {click: 'g', long_click: '\', hint: 'eng'}
       - {click: 'h', long_click: '「', hint: 'ang'}
       - {click: 'j', long_click: '」', hint: 'an'}
       - {click: 'k', long_click: ':', hint: 'uai/ing'}
@@ -632,7 +632,7 @@ preset_keyboards:
       - {click: 'x', long_click: cut, hint: '(iu)a'}
       - {click: 'c', long_click: copy, hint: 'ao'}
       - {click: 'v', long_click: paste, hint: 'zh/ui/ü'}
-      - {click: 'b', long_click: '_', swipe_up: Date, hint: 'in'}
+      - {click: 'b', long_click: '_', hint: 'in'}
       - {click: 'n', long_click: '"', hint: 'iao'}
       - {click: 'm', long_click: "'", hint: 'ian'}
       - {click: BackSpace, swipe_left: Escape, width: 15, label: '⌫'}
