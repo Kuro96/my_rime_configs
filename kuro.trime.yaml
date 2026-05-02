@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2015 - 2024 Rime community
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Trime default style settings
 # encoding: utf-8
 
@@ -5,8 +9,25 @@ config_version: "0.1"
 name: kuro #方案名称
 author: kuro #作者资讯
 
+#键盘高度
+height:
+  1: &jpgd1 30 #表情键盘
+  2: &jpgd2 24 #颜文字键盘1
+  3: &jpgd3 24 #颜文字键盘2
+  4: &jpgd4 48 #主键盘
+  5: &jpgd5 39.5 #符号键盘
+  6: &hgap 4 #键盘横缝大小
+  7: &sgap 8 #键盘竖缝大小
+
+#键盘高度
+round_corner:
+  1: &round1 12 #按键圆角半径
+  2: &round2 0 #候选窗口圆角
+  3: &round3 12 #回车键圆角
+
+#界面风格、功能开关
 style:
-  auto_caps: ascii #自动句首大写:true|false|ascii
+  auto_caps: true #自动句首大写:true|false
   background_dim_amount: 0.5
   candidate_font: han.ttf #候选字型
   candidate_padding: 5 #候选项内边距
@@ -15,86 +36,75 @@ style:
   candidate_use_cursor: true #高亮候选项
   candidate_view_height: 28 #候选区高度
   color_scheme: default #配色方案
-  comment_font: comment.ttf #编码提示字型
+  comment_font: comment.ttf #编码提示字体
   comment_height: 12 #编码提示区高度
   comment_on_top: true #编码提示在上方或右侧
   comment_text_size: 12 #编码提示字号
   hanb_font: HanaMinB.ttf #扩充字型
   horizontal: true #水平模式
-  horizontal_gap: 1 #键水平间距
+  horizontal_gap: *hgap #键水平间距
   keyboard_padding: 0 #竖屏模式下，屏幕左右两侧与键盘的距离（曲面屏减少误触）
-  keyboard_padding_left: 0 #竖屏屏模式下，左手键盘布局，屏幕左侧与键盘的距离
-  keyboard_padding_right: 40 #竖屏屏模式下，左手键盘布局，屏幕右侧与键盘的距离
   keyboard_padding_bottom: 0 #竖屏模式下，屏幕下边缘与键盘的距离（避免误触发全面屏手势）
   keyboard_padding_land: 40 #横屏模式下，屏幕左右两侧与键盘的距离（避免横屏按键过度拉伸变形）
   keyboard_padding_land_bottom: 0 #横屏模式下，屏幕下侧与键盘的距离
-  layout: #悬浮窗口设置
-    position: fixed #位置：left|right|left_up|right_up|fixed|bottom_left|bottom_right|top_left|top_right(left、right需要>=Android5.0)
-    min_length: 5 #最小词长
-    max_length: 10 #超过字数则换行
-    sticky_lines: 0 #固顶行数
+  layout:
+    position: fixed #候选窗口位置：left|right|left_up|right_up|fixed|bottom_left|bottom_right|top_left|top_right(left、right需要Android5.0以上)
+    min_length: 4 #候选窗口最小词长
+    max_length: 14 #超过字数则换行
+    sticky_lines: 1 #固顶行数
     sticky_lines_land: 0 #横屏模式下的固顶行数
-    max_entries: 1 #最大词条数
-    min_check: 3 #只要前n个候选词有长度大于等于min_length的词，就会把长度符合以及之前的词全部加到悬浮窗内。
-    all_phrases: false #所有满足条件的词语都显示在窗口
+    max_entries: 5 #候选窗口最大词条数
     border: 2 #边框宽度
-    max_width: 230 #最大宽度，超过则自动换行
-    max_height: 400 #最大高度
-    min_width: 40 #最小宽度
-    min_height: 0 #最小高度
+    max_width: 360 #最大宽度，超过则自动换行
+    max_height: 300 #最大高度
+    min_width: 0 #最小宽度
+    min_height: 50 #最小高度
     margin_x: 5 #水平边距 NOTE: margin_{x, y, bottom} 实际为 padding
     margin_y: 5 #竖直边距
-    margin_bottom: 0 #底部边距 （用于适配特定背景图）
     line_spacing: 0 #候选词的行间距(px)
     line_spacing_multiplier: 1.2 #候选词的行间距(倍数)
     real_margin: 3 #屏幕左右边缘和悬浮窗之间的距离 TODO: 在 4.0 时给 real_margin 与 spacing 换一个更适合的名字
     spacing: 1 #屏幕上下边缘或预编辑上下边缘和悬浮窗之间的距离
-    round_corner: 8 #窗口圆角
+    round_corner: *round2 #候选窗口圆角
     alpha: 0xdd #透明度(0-255)
     elevation: 5 #阴影(>=Android5.0)
+    #background: background.png #颜色或者backgrounds目录下的图片文档名
     movable: false #是否可移动窗口，或仅移动一次 true|false|once
+    all_phrases: false #显示所有长词
   window: #悬浮窗口组件
     - {start: "", move: "🐕<", end: ""}
     - {start: "", composition: "%s", end: "", letter_spacing: 0} #letter_spacing需要>=Android5.0。TODO: 不爲0时，会导致不换行的问题
-    - {start: "", click: "Hide", label: "▼", when: composing}
+    #- {start: "", click: "Hide", label: "▼", when: composing}
     - {start: "\n", label: "%s.", candidate: "%s", comment: " %s", end: "", sep: " "}
-  liquid_keyboard_window: #液态键盘模式下显示的悬浮窗口组件
-    - {start: "", click: "space", label: " ␣ "}
-    - {start: "", click: "BackSpace", label: " ⌫ "}
-    - {start: "", click: "Return", label: " ↵ "}
-    - {start: "", click: "liquid_keyboard_exit", label: " 🔙 "}
-  key_font: symbol.ttf #键盘字型
-  key_height: 55 #键高
-  key_long_text_size: 14 #长标籤字号
-  key_text_size: 22 #键字号
-  key_width: 10.0 #键宽，佔萤幕宽的百分比
-  keyboards: [.default, letter, number, symbols, mini] #键盘配置：自动键盘、字母、数字、符号、精简（供插入实体键盘使用）
-  label_text_size: 22 #标籤字号
-  label_font: label.ttf #编标籤字型
-  latin_font: latin.ttf #西文字型
+  key_font: symbol.ttf #键盘字体
+  key_height: *jpgd4 #键高
+  key_long_text_size: 16 #长标签字号
+  key_text_size: 24 #键字号
+  key_width: 10.0 #键宽，占屏幕宽的百分比
+  keyboards: [.default, letter, number, symbols, mini, flypy_compact] #键盘配置：自动键盘、字母、数字、符号、精简（供插入实体键盘使用）
+  label_text_size: 22 #标签字号
+  label_font: label.ttf #编标签字体
+  latin_font: latin.ttf #西文本体
   latin_locale: en_US #西文语言
   locale: zh_CN #预设语言 zh_TW,zh_CN,zh_HK,""
-  keyboard_height: 280 #锁定键盘高度，避免切换时键盘高度变化而造成闪烁
+  keyboard_height: 250 #锁定键盘高度，避免切换时键盘高度变化而造成闪烁
   keyboard_height_land: 200 #锁定横屏下键盘高度，避免切换时键盘高度变化而造成闪烁
   preview_font: HanaMinB.ttf #latin.ttf #按键提示字型
-  preview_height: 60 #按键提示高度
-  preview_offset: -12 #按键提示纵向偏移
+  preview_height: 56 #按键提示高度
+  preview_offset: -32 #按键提示纵向偏移
   preview_text_size: 40 #按键提示字号
   proximity_correction: true #按键纠错
-  reset_ascii_mode: false #显示键盘时重置爲中文状态
-  round_corner: 8 #按键圆角半径
+  reset_ascii_mode: false #显示键盘时重置为中文状态
+  round_corner: *round1 #按键圆角半径
   shadow_radius: 0.0 #按键阴影半径
   speech_opencc_config: s2t.json #语音输入简繁转换
-  symbol_font: symbol.ttf #符号字型
+  symbol_font: symbol.ttf #符号字体
   symbol_text_size: 10 #符号字号
-  text_font: latin.ttf #编码字型
+  text_font: latin.ttf #编码字体
   #text_height: 22 #编码区高度
-  text_size: 16 #编码区字号
-  vertical_correction: -10
-  vertical_gap: 1 #键盘行距
-  long_text_font: comment.ttf #剪贴板等可能包含大段文本使用的字体
-  #background_folder: #背景图保存在background目录下的哪个子目录
-  key_long_text_border: 1
+  text_size: 14 #编码区字号
+  vertical_correction: -5
+  vertical_gap: *sgap #键盘行距
   enter_label_mode: 0  #是否使用App提供的ActionLabel内容作为Enter键的文本（由于多数App没有适配ActionLable，实际影响不大）。0不使用，1只使用actionlabel，2优先使用，3当其他方式没有获得label时才读取actionlabel
   enter_labels:  # 定义Enter键的文本
     go: 前往
@@ -105,6 +115,7 @@ style:
     send: 发送
     default: Enter   # 定义默认Enter键的文本
 
+# 最好保留一项，防止其他主题使用 __include 时无法加载
 fallback_colors:
   candidate_text_color: text_color
   comment_text_color: candidate_text_color
@@ -142,6 +153,7 @@ fallback_colors:
   text_back_color: back_color #编码区背景，即悬浮窗背景
   long_text_back_color: key_back_color #长文本按键的背景(剪贴板）
 
+#配色方案
 preset_color_schemes:
   default:
     name: 自动/auto #方案名称
@@ -233,7 +245,11 @@ liquid_keyboard:
     type: HISTORY
   emoji:
     type: SINGLE
-    keys: "🙂😂🤣😆🙃😅🥺🙈🙉🙊☹😑😄🤐😨😱🌚🌝🤔❤💔🌹💣👌👍😣😥😮🙄😏😕😯😪😫😴😌🤑😉😋😎😍😘😚😛😜😝😒😓😔😲😷🤒😇🤓🤗🤕🙁😖😞😟😤😢😭😦😧😨😩😬😰😳😵😡😠☝✌🖕👎🙏🤘👏💪💋☘🍀🌸☕🍵🍺🍻🍦🍬🍚🍜🍲🍖🎂💤"
+    keys: "🙂😂🤣😆🙃😅🥺😎👀🙈🙉🙊☹😑😄🤐😨😱🌚🌝🤔❤💔🌹💣👌👍😣😥😮🙄😏😕😯😪😫😴😌🤑😉😋😎😍😘😚😛😜😝😒😓😔😲😷🤒😇🤓🤗🤕🙁😖😞😟😤😢😭😦😧😨😩😬😰😳😵😡😠☝✌🖕👎🙏🤘👏💪💋☘🍀🌸☕🍵🍺🍻🍦🍬🍚🍜🍲🍖🎂💤"
+  emoji_full:
+    type: SINGLE
+    name: 全emoji
+    keys: "😀😃😄😁😆😅🤣😂🙂🙃🫠😉😊😇🥰😍🤩😘😗☺😚😙🥲😋😛😜🤪😝🤑🤗🤭🫢🫣🤫🤔🫡🤐🤨😐😑😶🫥😏😒🙄😬🤥😌😔😪🤤😴😷🤒🤕🤢🤮🤧🥵🥶🥴😵🤯🤠🥳🥸😎🤓🧐😕🫤😟🙁☹😮😯😲😳🥺🥹😦😧😨😰😥😢😭😱😖😣😞😓😩😫🥱😤😡😠🤬😈👿💀☠💩🤡👹👺👻👽👾🤖😺😸😹😻😼😽🙀😿😾🙈🙉🙊💌💘💝💖💗💓💞💕💟❣💔❤🧡💛💚💙💜🤎🖤🤍💋💯💢💥💫💦💨🕳💬🗨🗯💭💤👋🤚🖐✋🖖🫱🫲🫳🫴👌🤌🤏✌🤞🫰🤟🤘🤙👈👉👆🖕👇☝🫵👍👎✊👊🤛🤜👏🙌🫶👐🤲🤝🙏✍💅🤳💪🦾🦿🦵🦶👂🦻👃🧠🫀🫁🦷🦴👀👁👅👄🫦👶🧒👦👧🧑👱👨🧔👩🧓👴👵🙍🙎🙅🙆💁🙋🧏🙇🤦🤷👮🕵💂🥷👷🫅🤴👸👳👲🧕🤵👰🤰🫃🫄🤱👼🎅🤶🦸🦹🧙🧚🧛🧜🧝🧞🧟🧌💆💇🚶🧍🧎🏃💃🕺🕴👯🧖🧗🤺🏇⛷🏂🏌🏄🚣🏊⛹🏋🚴🚵🤸🤼🤽🤾🤹🧘🛀🛌👭👫👬💏💑👪🗣👤👥🫂👣🏻🏼🏽🏾🏿🦰🦱🦳🦲🐵🐒🦍🦧🐶🐕🦮🐩🐺🦊🦝🐱🐈🦁🐯🐅🐆🐴🐎🦄🦓🦌🦬🐮🐂🐃🐄🐷🐖🐗🐽🐏🐑🐐🐪🐫🦙🦒🐘🦣🦏🦛🐭🐁🐀🐹🐰🐇🐿🦫🦔🦇🐻🐨🐼🦥🦦🦨🦘🦡🐾🦃🐔🐓🐣🐤🐥🐦🐧🕊🦅🦆🦢🦉🦤🪶🦩🦚🦜🐸🐊🐢🦎🐍🐲🐉🦕🦖🐳🐋🐬🦭🐟🐠🐡🦈🐙🐚🪸🐌🦋🐛🐜🐝🪲🐞🦗🪳🕷🕸🦂🦟🪰🪱🦠💐🌸💮🪷🏵🌹🥀🌺🌻🌼🌷🌱🪴🌲🌳🌴🌵🌾🌿☘🍀🍁🍂🍃🪹🪺🍄🍇🍈🍉🍊🍋🍌🍍🥭🍎🍏🍐🍑🍒🍓🫐🥝🍅🫒🥥🥑🍆🥔🥕🌽🌶🫑🥒🥬🥦🧄🧅🥜🫘🌰🍞🥐🥖🫓🥨🥯🥞🧇🧀🍖🍗🥩🥓🍔🍟🍕🌭🥪🌮🌯🫔🥙🧆🥚🍳🥘🍲🫕🥣🥗🍿🧈🧂🥫🍱🍘🍙🍚🍛🍜🍝🍠🍢🍣🍤🍥🥮🍡🥟🥠🥡🦀🦞🦐🦑🦪🍦🍧🍨🍩🍪🎂🍰🧁🥧🍫🍬🍭🍮🍯🍼🥛☕🫖🍵🍶🍾🍷🍸🍹🍺🍻🥂🥃🫗🥤🧋🧃🧉🧊🥢🍽🍴🥄🔪🫙🏺🌍🌎🌏🌐🗺🗾🧭🏔⛰🌋🗻🏕🏖🏜🏝🏞🏟🏛🏗🧱🪨🪵🛖🏘🏚🏠🏡🏢🏣🏤🏥🏦🏨🏩🏪🏫🏬🏭🏯🏰💒🗼🗽⛪🕌🛕🕍⛩🕋⛲⛺🌁🌃🏙🌄🌅🌆🌇🌉♨🎠🛝🎡🎢💈🎪🚂🚃🚄🚅🚆🚇🚈🚉🚊🚝🚞🚋🚌🚍🚎🚐🚑🚒🚓🚔🚕🚖🚗🚘🚙🛻🚚🚛🚜🏎🏍🛵🦽🦼🛺🚲🛴🛹🛼🚏🛣🛤🛢⛽🛞🚨🚥🚦🛑🚧⚓🛟⛵🛶🚤🛳⛴🛥🚢✈🛩🛫🛬🪂💺🚁🚟🚠🚡🛰🚀🛸🛎🧳⌛⏳⌚⏰⏱⏲🕰🕛🕧🕐🕜🕑🕝🕒🕞🕓🕟🕔🕠🕕🕡🕖🕢🕗🕣🕘🕤🕙🕥🕚🕦🌑🌒🌓🌔🌕🌖🌗🌘🌙🌚🌛🌜🌡☀🌝🌞🪐⭐🌟🌠🌌☁⛅⛈🌤🌥🌦🌧🌨🌩🌪🌫🌬🌀🌈🌂☂☔⛱⚡❄☃⛄☄🔥💧🌊🎃🎄🎆🎇🧨✨🎈🎉🎊🎋🎍🎎🎏🎐🎑🧧🎀🎁🎗🎟🎫🎖🏆🏅🥇🥈🥉⚽⚾🥎🏀🏐🏈🏉🎾🥏🎳🏏🏑🏒🥍🏓🏸🥊🥋🥅⛳⛸🎣🤿🎽🎿🛷🥌🎯🪀🪁🎱🔮🪄🎮🕹🎰🎲🧩🧸🪅🪩🪆♠♥♦♣♟🃏🀄🎴🔫🎭🖼🎨🧵🪡🧶🪢👓🕶🥽🥼🦺👔👕👖🧣🧤🧥🧦👗👘🥻🩱🩲🩳👙👚👛👜👝🛍🎒🩴👞👟🥾🥿👠👡🩰👢👑👒🎩🎓🧢🪖⛑📿💄💍💎🔇🔈🔉🔊📢📣📯🔔🔕🎼🎵🎶🎙🎚🎛🎤🎧📻🎷🪗🎸🎹🎺🎻🪕🥁🪘📱📲☎📞📟📠🔋🪫🔌💻🖥🖨⌨🖱🖲💽💾💿📀🧮🎥🎞📽🎬📺📷📸📹📼🔍🔎🕯💡🔦🏮🪔📔📕📖📗📘📙📚📓📒📃📜📄📰🗞📑🔖🏷💰🪙💴💵💶💷💸💳🧾💹✉📧📨📩📤📥📦📫📪📬📭📮🗳✏✒🖋🖊🖌🖍📝💼📁📂🗂📅📆🗒🗓📇📈📉📊📋📌📍📎🖇📏📐✂🗃🗄🗑🔒🔓🔏🔐🔑🗝💣🔨🪓⛏⚒🛠🗡⚔🪃🏹🛡🪚🔧🪛🔩⚙🗜⚖🦯🔗⛓🪝🧰🧲🪜⚗🧪🧫🧬🔬🔭📡💉🩸💊🩹🩼🩺🩻🚪🛗🪞🪟🛏🛋🪑🚽🪠🚿🛁🪤🪒🧴🧷🧹🧺🧻🪣🧼🫧🪥🧽🧯🛒🧿🪬🚬⚰🪦⚱🗿🪧🪪🏧🚮🚰♿🚹🚺🚻🚼🚾🛂🛃🛄🛅⚠🚸⛔🚫🚳🚭🚯🚱🚷📵🔞☢☣⬆↗➡↘⬇↙⬅↖↕↔↩↪⤴⤵🔃🔄🔙🔚🔛🔜🔝🛐⚛🕉✡☸☯✝☦☪☮🕎🔯♈♉♊♋♌♍♎♏♐♑♒♓⛎🔀🔁🔂▶⏩⏭⏯◀⏪⏮🔼⏫🔽⏬⏸⏹⏺⏏🎦🔅🔆📶📳📴♀♂⚧✖➕➖➗🟰♾‼⁉❓❔❕❗〰💱💲⚕♻⚜🔱📛🔰⭕✅☑✔❌❎➰➿〽✳✴❇©®™🔟🔠🔡🔢🔣🔤🅰🆎🅱🆑🆒🆓ℹ🆔Ⓜ🆕🆖🅾🆗🅿🆘🆙🆚🈁🈂🈷🈶🈯🉐🈹🈚🈲🉑🈸🈴🈳㊗㊙🈺🈵🔴🟠🟡🟢🔵🟣🟤⚫⚪🟥🟧🟨🟩🟦🟪🟫⬛⬜◼◻◾◽▪▫🔶🔷🔸🔹🔺🔻💠🔘🔳🔲🏁🚩🎌🏴🏳"
   clipboard:
     type: CLIPBOARD
     name: 剪贴
@@ -441,6 +457,8 @@ preset_keys:
   Keyboard_letter: {label: 字母, send: Eisu_toggle, select: default}
   Keyboard_default: {label: 返回, send: Eisu_toggle, select: .default}
   Keyboard_switch: {label: 键盘, send: Eisu_toggle, select: .next}
+  Keyboard_flypy: {label: 标准, send: Eisu_toggle, select: flypy}
+  Keyboard_flypy_compact: {label: 紧凑, send: Eisu_toggle, select: flypy_compact}
   liquid_keyboard_switch: { label: 更多, send: function, command: liquid_keyboard, option: "符号表" }
   liquid_keyboard_exit: {label: 返回, send: function, command: liquid_keyboard, option: "-1"}  #退出liquidkeyboard
   liquid_keyboard_emoji: { label: 🙂, send: function, command: liquid_keyboard, option: "emoji" }
@@ -508,24 +526,24 @@ preset_keyboards:
     key_press_offset_x: 2
     key_press_offset_y: 2
     keys:
-      - {click: 'q', long_click: '!', swipe_up: 1}
-      - {click: 'w', long_click: '@', swipe_up: 2}
-      - {click: 'e', long_click: '#', swipe_up: 3}
-      - {click: 'r', long_click: '$', swipe_up: 4}
-      - {click: 't', long_click: '%', swipe_up: 5}
-      - {click: 'y', long_click: '^', swipe_up: 6}
-      - {click: 'u', long_click: '&', swipe_up: 7}
-      - {click: 'i', long_click: '*', swipe_up: 8}
-      - {click: 'o', long_click: '(){Left}', swipe_up: 9}
-      - {click: 'p', long_click: 'Hide', swipe_up: 0}
+      - {click: 'q', long_click: '!'}
+      - {click: 'w', long_click: '@'}
+      - {click: 'e', long_click: '#'}
+      - {click: 'r', long_click: '$'}
+      - {click: 't', long_click: '%'}
+      - {click: 'y', long_click: '^'}
+      - {click: 'u', long_click: '&'}
+      - {click: 'i', long_click: '*'}
+      - {click: 'o', long_click: '(){Left}'}
+      - {click: 'p', long_click: 'Hide'}
       - {width: 5}
-      - {click: 'a', long_click: select_all, swipe_left: Left, swipe_right: Right, swipe_up: Up, swipe_down: Down}
+      - {click: 'a', long_click: select_all}
       - {click: 's', long_click: '~', swipe_left: Home, swipe_right: End, swipe_up: Page_Up, swipe_down: Page_Down}
       - {click: 'd', long_click: '-', swipe_down: '_'}
       - {click: 'f', long_click: '+', swipe_down: '='}
       - {click: 'g', long_click: '\', swipe_down: '|'}
-      - {click: 'h', long_click: '[]{Left}', swipe_left: '[', swipe_right: ']'}
-      - {click: 'j', long_click: '{}{Left}', swipe_left: '{', swipe_right: '}'}
+      - {click: 'h', long_click: '[]{Left}'}
+      - {click: 'j', long_click: '{}{Left}', swipe_left: Left, swipe_right: Right, swipe_up: Up, swipe_down: Down}
       - {click: 'k', long_click: ':'}
       - {click: 'l', long_click: ';'}
       - {width: 5}
@@ -606,24 +624,24 @@ preset_keyboards:
       - {click: '8', long_click: '*'}
       - {click: '9', long_click: '('}
       - {click: '0', long_click: ')'}
-      - {click: 'q', long_click: '·', swipe_up: 1, hint: 'iu'}
-      - {click: 'w', long_click: '=', swipe_up: 2, hint: 'ei'}
-      - {click: 'e', long_click: 'Google', swipe_up: 3, hint: 'e'}
-      - {click: 'r', long_click: 'Bili', swipe_up: 4, hint: 'uan'}
-      - {click: 't', long_click: '|', swipe_up: 5, hint: '(uü)e'}
-      - {click: 'y', long_click: '[', swipe_up: 6, hint: 'un'}
-      - {click: 'u', long_click: ']', swipe_up: 7, hint: 'sh/u'}
-      - {click: 'i', long_click: '{', swipe_up: 8, hint: 'ch/i'}
-      - {click: 'o', long_click: '}', swipe_up: 9, hint: '[u]o'}
-      - {click: 'p', long_click: 'Hide', swipe_up: 0, hint: 'ie'}
+      - {click: 'q', long_click: '·', swipe_up: "1", hint: 'iu'}
+      - {click: 'w', long_click: '=', swipe_up: "2", hint: 'ei'}
+      - {click: 'e', long_click: 'Google', swipe_up: "3", hint: 'e'}
+      - {click: 'r', long_click: 'Bili', swipe_up: "4", hint: 'uan'}
+      - {click: 't', long_click: '|', swipe_up: "5", hint: '(uü)e'}
+      - {click: 'y', long_click: '[', swipe_up: "6", hint: 'un'}
+      - {click: 'u', long_click: ']', swipe_up: "7", hint: 'sh/u'}
+      - {click: 'i', long_click: '{', swipe_up: "8", hint: 'ch/i'}
+      - {click: 'o', long_click: '}', swipe_up: "9", hint: '[u]o'}
+      - {click: 'p', long_click: 'Hide', swipe_up: "0", hint: 'ie'}
       - {width: 5}
-      - {click: 'a', long_click: select_all, swipe_left: Left, swipe_right: Right, swipe_up: Up, swipe_down: Down, hint: 'a'}
+      - {click: 'a', long_click: select_all, hint: 'a'}
       - {click: 's', long_click: '~', swipe_left: Home, swipe_right: End, swipe_up: Page_Up, swipe_down: Page_Down, hint: '[i]ong'}
       - {click: 'd', long_click: '-', hint: 'ai'}
       - {click: 'f', long_click: '+', hint: 'en'}
       - {click: 'g', long_click: '\', hint: 'eng'}
       - {click: 'h', long_click: '「', hint: 'ang'}
-      - {click: 'j', long_click: '」', hint: 'an'}
+      - {click: 'j', long_click: '」', swipe_left: Left, swipe_right: Right, swipe_up: Up, swipe_down: Down, hint: 'an'}
       - {click: 'k', long_click: ':', hint: 'uai/ing'}
       - {click: 'l', long_click: ';', hint: '(iu)ang'}
       - {width: 5}
@@ -637,7 +655,62 @@ preset_keyboards:
       - {click: 'm', long_click: "'", hint: 'ian'}
       - {click: BackSpace, swipe_left: Escape, width: 15, label: '⌫'}
       - {click: Mode_switch, long_click: Menu, width: 15}
-      - {click: Keyboard_symbols, long_click: Punct_switch}
+      - {click: Keyboard_symbols, long_click: Keyboard_flypy_compact}
+      - {click: ',', long_click: '<'}
+      - {click: space, width: 30}
+      - {click: '.', long_click: '>'}
+      - {click: '/', long_click: '?'}
+      - {click: Return, composing: Return1, long_click: liquid_keyboard_clipboard, width: 15}
+  flypy_compact:
+    name: 紧凑双拼
+    author: "Kuro Latency"
+    ascii_mode: 0
+    columns: 10
+    width: 10
+    height: 40
+    keyboard_height: 185
+    lock: true
+    key_symbol_offset_x: 0
+    key_symbol_offset_y: 0
+    key_text_offset_x: 0
+    key_text_offset_y: 0
+    key_hint_offset_x: 0
+    key_hint_offset_y: 0
+    key_press_offset_x: 2
+    key_press_offset_y: 2
+    keys:
+      - {click: 'q', long_click: '·', swipe_up: "1", hint: 'iu'}
+      - {click: 'w', long_click: '=', swipe_up: "2", hint: 'ei'}
+      - {click: 'e', long_click: 'Google', swipe_up: "3", hint: 'e'}
+      - {click: 'r', long_click: 'Bili', swipe_up: "4", hint: 'uan'}
+      - {click: 't', long_click: '|', swipe_up: "5", hint: '(uü)e'}
+      - {click: 'y', long_click: '[', swipe_up: "6", hint: 'un'}
+      - {click: 'u', long_click: ']', swipe_up: "7", hint: 'sh/u'}
+      - {click: 'i', long_click: '{', swipe_up: "8", hint: 'ch/i'}
+      - {click: 'o', long_click: '}', swipe_up: "9", hint: '[u]o'}
+      - {click: 'p', long_click: 'Hide', swipe_up: "0", hint: 'ie'}
+      - {width: 5}
+      - {click: 'a', long_click: select_all, hint: 'a'}
+      - {click: 's', long_click: '~', swipe_left: Home, swipe_right: End, swipe_up: Page_Up, swipe_down: Page_Down, hint: '[i]ong'}
+      - {click: 'd', long_click: '-', hint: 'ai'}
+      - {click: 'f', long_click: '+', hint: 'en'}
+      - {click: 'g', long_click: '\', hint: 'eng'}
+      - {click: 'h', long_click: '「', hint: 'ang'}
+      - {click: 'j', long_click: '」', swipe_left: Left, swipe_right: Right, swipe_up: Up, swipe_down: Down, hint: 'an'}
+      - {click: 'k', long_click: ':', hint: 'uai/ing'}
+      - {click: 'l', long_click: ';', hint: '(iu)ang'}
+      - {width: 5}
+      - {click: Shift_L, send_bindings: false, width: 15}
+      - {click: 'z', long_click: '`', hint: 'ou'}
+      - {click: 'x', long_click: cut, hint: '(iu)a'}
+      - {click: 'c', long_click: copy, hint: 'ao'}
+      - {click: 'v', long_click: paste, hint: 'zh/ui/ü'}
+      - {click: 'b', long_click: '_', hint: 'in'}
+      - {click: 'n', long_click: '"', hint: 'iao'}
+      - {click: 'm', long_click: "'", hint: 'ian'}
+      - {click: BackSpace, swipe_left: Escape, width: 15, label: '⌫'}
+      - {click: Mode_switch, long_click: Menu, width: 15}
+      - {click: Keyboard_symbols, long_click: Keyboard_flypy}
       - {click: ',', long_click: '<'}
       - {click: space, width: 30}
       - {click: '.', long_click: '>'}
