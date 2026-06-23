@@ -167,7 +167,7 @@ local function is_absolute_path(path)
         return true
     end
     if path:match("^[a-zA-Z]:[\\/]") then
-        return true 
+        return true
     end
     return false
 end
@@ -175,7 +175,7 @@ end
 function wanxiang.get_filename_with_fallback(filename)
     local _path = filename:gsub("^[\\/]+", "")
     local user_dir = rime_api.get_user_data_dir()
-    
+
     if not is_absolute_path(user_dir) then
         return filename
     end
@@ -186,7 +186,7 @@ function wanxiang.get_filename_with_fallback(filename)
     end
 
     local shared_dir = rime_api.get_shared_data_dir()
-    
+
     if not is_absolute_path(shared_dir) then
         return filename
     end
@@ -338,7 +338,7 @@ function RegexParser.normalize(regex)
     p = p:gsub("\\%?", "%%?")
     p = p:gsub("\\%(", "%%("); p = p:gsub("\\%)", "%%)")
     p = p:gsub("\\%[", "%%["); p = p:gsub("\\%]", "%%]")
-    
+
     return p
 end
 
@@ -360,7 +360,7 @@ local function expand_optional(pattern_list)
         local len = #pat
         while i <= len do
             local char = string.sub(pat, i, i)
-            
+
             if char == "%" then
                 -- 转义符，跳过下一个
                 i = i + 2
@@ -407,7 +407,7 @@ local function expand_optional(pattern_list)
             local p1 = string.sub(pat, 1, atom_end) .. string.sub(pat, q_idx + 1)
             -- 2. 删除原子 (去掉 原子+?)
             local p2 = string.sub(pat, 1, atom_start - 1) .. string.sub(pat, q_idx + 1)
-            
+
             table.insert(result, p1)
             table.insert(result, p2)
         else
@@ -419,7 +419,7 @@ local function expand_optional(pattern_list)
         if #result > 100 then return result end
         return expand_optional(result)
     end
-    
+
     return result
 end
 
@@ -522,11 +522,11 @@ function wanxiang.load_regex_patterns(config, path)
     if not map then return patterns end
     local keys = map:keys()
     if not keys then return patterns end
-    
+
     local count = 0
     local is_ud = (type(keys) == "userdata")
     if is_ud then
-        if keys.size then count = keys.size 
+        if keys.size then count = keys.size
         else pcall(function() count = keys:size() end) end
     else
         count = #keys

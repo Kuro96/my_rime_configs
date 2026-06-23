@@ -33,14 +33,14 @@ local shared_reverted_code = ""
 local shared_is_backspacing = false
 -- 内部运行参数默认值 (会被外部 YAML 配置覆盖)
 local CONFIG = {
-    MAX_CANDIDATES      = 5,             
-    MAX_PREDICTIONS     = 3,             
+    MAX_CANDIDATES      = 5,
+    MAX_PREDICTIONS     = 3,
     EXPIRY_SECONDS      = 90 * 24 * 3600,
     P_EXPIRY_SECONDS    = 30 * 24 * 3600,
-    MAX_MEMORY_BRANCHES = 15,            
-    DECAY_RATE          = 0.85,          
-    SCAN_LIMIT          = 80,            
-    ENABLE_PREDICT_SPACE = false,  
+    MAX_MEMORY_BRANCHES = 15,
+    DECAY_RATE          = 0.85,
+    SCAN_LIMIT          = 80,
+    ENABLE_PREDICT_SPACE = false,
     CONTEXT_TIMEOUT_MS  = 5000,
     ENABLE_POST_PREDICT = true,
     ENABLE_CONTEXT_REORDER = true,
@@ -54,9 +54,9 @@ local default_classifiers = "百千万亿个多只名位口头匹条群批伙张
 
 local function build_classifier_lookup(str)
     CLASSIFIER_LOOKUP = {}
-    if not str or str == "" then return end 
+    if not str or str == "" then return end
     for c in string.gmatch(str, "[%z\1-\127\194-\244][\128-\191]*") do
-        if not s_match(c, "%s") then 
+        if not s_match(c, "%s") then
             CLASSIFIER_LOOKUP[c] = true
         end
     end
@@ -73,8 +73,8 @@ local PARTICLE_WHITELIST = {
     ["过"]=true, ["好"]=true, ["行"]=true, ["对"]=true, ["成"]=true
 }
 
-local function is_tone_symbol(text) 
-    return s_match(text, "^[！？，。～]+$") ~= nil 
+local function is_tone_symbol(text)
+    return s_match(text, "^[！？，。～]+$") ~= nil
 end
 
 local utf8_len = utf8 and utf8.len or function(str)
@@ -107,8 +107,8 @@ local function load_config(env)
             if list then
                 for i = 0, list.size - 1 do
                     local val = list:get_value_at(i)
-                    if val then 
-                        custom_str = custom_str .. val:get_string() 
+                    if val then
+                        custom_str = custom_str .. val:get_string()
                     end
                 end
             else
@@ -199,9 +199,9 @@ end
 
 -- 模糊查询降级参数 (现在统一供 1 和 P 使用)
 local function get_suffix_lengths(len)
-    if len >= 4 then return {4, 3, 2} 
-    elseif len == 3 then return {3, 2}    
-    elseif len == 2 then return {2}       
+    if len >= 4 then return {4, 3, 2}
+    elseif len == 3 then return {3, 2}
+    elseif len == 2 then return {2}
     elseif len == 1 then return {1} end
     return {}
 end
@@ -211,18 +211,18 @@ local function get_predictions(env, prev_commit)
     if not prev_commit or prev_commit == "" then return nil end
     local db = get_db(env)
     if not db then return nil end
-    
+
     local cands = {}
     local seen = {}
-    local scan_limit = CONFIG.SCAN_LIMIT 
-    
+    local scan_limit = CONFIG.SCAN_LIMIT
+
     local function fetch_and_clean(query_key, multiplier)
         local da = db:query(query_key)
         if not da then return end
         local scan_count = 0
         local now = os_time()
-        local prefix_cands = {} 
-        
+        local prefix_cands = {}
+
         for k, v in da:iter() do
             if scan_count >= scan_limit or not s_find(k, query_key, 1, true) then break end
             if s_sub(k, 1, 1) ~= "\1" then
@@ -230,12 +230,12 @@ local function get_predictions(env, prev_commit)
                 local c_str, ts_str = s_match(v, "^([^|]+)|?(.*)$")
                 local count = tonumber(c_str) or 0
                 local ts = tonumber(ts_str) or 0
-                
+
                 local is_p_gram = (s_sub(k, 1, 2) == "P\t")
                 local limit = is_p_gram and CONFIG.P_EXPIRY_SECONDS or CONFIG.EXPIRY_SECONDS
-                
+
                 if ts == 0 then ts = now - limit - 1 end
-                
+
                 if (now - ts) > limit then
                     if db.erase then db:erase(k) else db:update(k, "") end
                 else
@@ -251,7 +251,7 @@ local function get_predictions(env, prev_commit)
             scan_count = scan_count + 1
         end
         da = nil
-        
+
         if #prefix_cands > 0 then
             sort(prefix_cands, function(a, b) return a.weight > b.weight end)
             for i, c in ipairs(prefix_cands) do
@@ -268,30 +268,30 @@ local function get_predictions(env, prev_commit)
     if #history >= 1 then fetch_and_clean("S\t" .. history[#history] .. "\t", 1000000) end
 
     -- 小于等于2先找上文组合查 2-Gram
-    if #history >= 2 then 
+    if #history >= 2 then
         local u0 = history[#history - 1]
         local u1 = history[#history]
         local len_u0 = u0 and utf8_len(u0) or 0
         local len_u1 = u1 and utf8_len(u1) or 0
-        
+
         -- 对齐写入时的条件：u1不超过4，且总和不超过5
         if len_u1 <= 4 and (len_u0 + len_u1) <= 5 then
-            fetch_and_clean("2\t" .. u0 .. "\t" .. u1 .. "\t", 10000) 
+            fetch_and_clean("2\t" .. u0 .. "\t" .. u1 .. "\t", 10000)
         end
     end
 
     -- 查 1-Gram
-    if #cands < CONFIG.MAX_CANDIDATES and #history >= 1 then 
+    if #cands < CONFIG.MAX_CANDIDATES and #history >= 1 then
         local u1 = history[#history]
         local chars = get_utf8_chars(u1)
         local len_u1 = #chars
-        
+
         local max_len = math_min(len_u1, 4)
         local min_len = (len_u1 >= 2) and 2 or 1
-        
+
         for l = max_len, min_len, -1 do
             local lookup_u1 = table.concat(chars, "", len_u1 - l + 1, len_u1)
-            fetch_and_clean("1\t" .. lookup_u1 .. "\t", 100) 
+            fetch_and_clean("1\t" .. lookup_u1 .. "\t", 100)
             if #cands > 0 then break end
         end
     end
@@ -323,7 +323,7 @@ local function remove_predict_candidate(env, word)
             if c.word == word then exact_key = c.db_key; break end
         end
     end
-    
+
     if exact_key then
         if db.erase then db:erase(exact_key) else db:update(exact_key, "") end
     end
@@ -337,7 +337,7 @@ end
 
 local P = {}
 function P.init(env)
-    load_config(env) 
+    load_config(env)
     env.is_t9 = false
     if wanxiang.get_input_method_type then
         env.is_t9 = (wanxiang.get_input_method_type(env) == "t9")
@@ -345,7 +345,7 @@ function P.init(env)
     local db = get_db(env)
     local now = os_time()
     local CLEAN_INTERVAL = 259200  --3天
-    
+
     local last_clean_str = db:fetch("\0last_clean_time")
     local last_clean_time = tonumber(last_clean_str) or 0
 
@@ -369,10 +369,10 @@ function P.init(env)
             log.info("【用户预测库自动维护】距上次清理已超3天，本次静默扫除 " .. deleted_count .. " 条过期记忆。")
         end
     end
-    env.need_push = false 
+    env.need_push = false
     env.last_written_keys = {}
     env.just_committed = false
-    
+
     env.commit_cb = function(ctx)
         shared_reverted_code = ""
         shared_max_input_code = ""
@@ -387,16 +387,16 @@ function P.init(env)
 
         local current_time = (rime_api and rime_api.get_time_ms) and rime_api.get_time_ms() or (os_time() * 1000)
         if last_commit ~= "" and (current_time - last_commit_time) > CONFIG.CONTEXT_TIMEOUT_MS then
-            reset_memory_chain(env, "输入超时") 
+            reset_memory_chain(env, "输入超时")
         end
 
-        if not is_predicting then 
-            is_predicting = true 
+        if not is_predicting then
+            is_predicting = true
             predict_count = 1
         else
             predict_count = predict_count + 1
         end
-        
+
         if predict_count > CONFIG.MAX_PREDICTIONS then
             is_predicting = false
             predict_count = 0
@@ -404,12 +404,12 @@ function P.init(env)
             return
         end
 
-        env.last_written_keys = {} 
+        env.last_written_keys = {}
         local function update_memory(key, is_tone)
             local val = db:fetch(key)
             local now = os_time()
             env.last_written_keys[key] = val or ""
-            
+
             if not val or val == "" then
                 db:update(key, "1|" .. tostring(now))
             else
@@ -417,7 +417,7 @@ function P.init(env)
                 local count = tonumber(c_str) or 0
                 local ts = tonumber(ts_str) or 0
                 local age = now - ts
-                
+
                 if age > CONFIG.EXPIRY_SECONDS then
                     db:update(key, "1|" .. tostring(now))
                 else
@@ -427,25 +427,25 @@ function P.init(env)
         end
 
         current_time = (rime_api and rime_api.get_time_ms) and rime_api.get_time_ms() or (os_time() * 1000)
-        
+
         local should_record = true
-        local is_terminal_symbol = false 
+        local is_terminal_symbol = false
         local text_chars = get_utf8_chars(text)
         local len_text = #text_chars
 
         -- 基础规则：单次上屏超过 4 个字不记录
         if len_text > 4 then should_record = false end
-        
+
         -- 基础规则：标点与助词白名单隔离
         if should_record and is_tone_symbol(text) then
             local prev_chars = get_utf8_chars(last_commit)
-            local last_char = prev_chars[#prev_chars] or "" 
-            
+            local last_char = prev_chars[#prev_chars] or ""
+
             if not PARTICLE_WHITELIST[last_char] then
                 should_record = false
-                reset_memory_chain(env, "非助词接标点") 
+                reset_memory_chain(env, "非助词接标点")
             else
-                is_terminal_symbol = true 
+                is_terminal_symbol = true
             end
         end
 
@@ -467,7 +467,7 @@ function P.init(env)
             if last_commit ~= "" then
                 local u1_chars = get_utf8_chars(last_commit)
                 local len_u1 = #u1_chars
-                
+
                 -- P-Gram
                 local lengths_to_learn = get_suffix_lengths(len_u1)
                 for _, l in ipairs(lengths_to_learn) do
@@ -475,12 +475,12 @@ function P.init(env)
                         update_memory("P\t" .. table.concat(u1_chars, "", len_u1 - l + 1, len_u1) .. "\t" .. text, text_is_tone)
                     end
                 end
-                
+
                 -- 1-Gram
-                if len_u1 <= 4 and #history >= 1 then 
-                    update_memory("1\t" .. last_commit .. "\t" .. text, text_is_tone) 
+                if len_u1 <= 4 and #history >= 1 then
+                    update_memory("1\t" .. last_commit .. "\t" .. text, text_is_tone)
                 end
-                
+
                 -- 2-Gram
                 if len_u1 <= 4 and #history >= 2 then
                     local u0 = history[#history - 1]
@@ -494,7 +494,7 @@ function P.init(env)
             if len_text == 4 then
                 local part1 = text_chars[1] .. text_chars[2]
                 local part2 = text_chars[3] .. text_chars[4]
-                
+
                 local is_known_prefix = false
                 for _, prefix in ipairs({"1", "P"}) do
                     local query_key = prefix .. "\t" .. part1 .. "\t"
@@ -514,18 +514,18 @@ function P.init(env)
                 end
             end
         end
-        
+
         -- 调用逻辑解耦
         if should_record then
             if is_terminal_symbol then
-                reset_memory_chain(env, "终结符上屏完毕") 
+                reset_memory_chain(env, "终结符上屏完毕")
             else
                 insert(history, text)
                 if #history > 2 then remove(history, 1) end
                 last_commit = text
             end
         end
-        
+
         -- 事务入栈：把本次写库的记录推入回滚栈（最大保留 3 级）
         env.undo_stack = env.undo_stack or {}
         if next(env.last_written_keys) then
@@ -536,14 +536,14 @@ function P.init(env)
         last_commit_time = current_time
         env.last_action_time = current_time
         env.just_committed = true
-        
+
         -- 如果两个开关都没开，绝对不去查库！绝对不建缓存
         if predict_count <= CONFIG.MAX_PREDICTIONS and ctx:get_option("prediction") then
             if CONFIG.ENABLE_POST_PREDICT or CONFIG.ENABLE_CONTEXT_REORDER then
                 pending_cands = get_predictions(env, last_commit)
-                if pending_cands then 
+                if pending_cands then
                     if CONFIG.ENABLE_POST_PREDICT then
-                        env.need_push = true 
+                        env.need_push = true
                     else
                         predict_count = 0; is_predicting = false
                     end
@@ -557,7 +557,7 @@ function P.init(env)
             predict_count = 0; is_predicting = false; pending_cands = nil
         end
     end
-    
+
     env.update_cb = function(ctx)
         local input = ctx.input or ""
         if is_predicting and not s_find(input, PH_CHAR) and not env.need_push then
@@ -574,16 +574,16 @@ function P.init(env)
                     local ts = tonumber(ts_str) or 0
                     local is_p_gram = (s_sub(k, 1, 2) == "P\t")
                     local limit = is_p_gram and CONFIG.P_EXPIRY_SECONDS or CONFIG.EXPIRY_SECONDS
-                    
+
                     if ts == 0 then ts = now - limit - 1 end
-                    
+
                     if (now - ts) > limit then
                         if db.erase then db:erase(k) else db:update(k, "") end
                         deleted_count = deleted_count + 1
                     end
                 end
             end
-            
+
             reset_memory_chain(env, "手动清理结束")
             -- 上屏提示信息，让用户知道清理了多少条垃圾
             env.engine:commit_text("【预测数据库清理完成：共清除 " .. deleted_count .. " 条过期记忆】")
@@ -619,7 +619,7 @@ function P.init(env)
                             local _, new_ts = s_match(v, "^([^|]+)|?(.*)$")
                             local o_ts = tonumber(old_ts) or 0
                             local n_ts = tonumber(new_ts) or 0
-                            
+
                             if n_ts > o_ts then db:update(k, v) end
                         else
                             db:update(k, v)
@@ -641,7 +641,7 @@ function P.init(env)
             ctx.caret_pos = expected_len
             return
         end
-        
+
         if s_find(input, PH_CHAR) then
             if input ~= expected_ph then
                 local clean_text = string.gsub(input, PH_CHAR, "")
@@ -652,12 +652,12 @@ function P.init(env)
                 if clean_text ~= "" then ctx:push_input(clean_text) end
                 return
             else
-                if ctx.caret_pos < expected_len then 
+                if ctx.caret_pos < expected_len then
                     ctx:clear()
                     predict_count = 0
                     is_predicting = false
                     pending_cands = nil
-                    return 
+                    return
                 end
             end
         end
@@ -666,11 +666,11 @@ function P.init(env)
     env.delete_cb = function(ctx)
         local comp = ctx.composition
         if not comp or comp:empty() then return end
-        
+
         local seg = comp:back()
         local idx = seg.selected_index
         local cand = seg:get_candidate_at(idx)
-        
+
         if cand and cand.type == "predict" then
             remove_predict_candidate(env, cand.text)
             ctx:clear()
@@ -695,7 +695,7 @@ function P.func(key, env)
             local current_input = ctx.input or ""
             if current_input ~= "" then
                 if shared_reverted_code == current_input then
-                    shared_reverted_code = "" 
+                    shared_reverted_code = ""
                 else
                     shared_reverted_code = current_input
                 end
@@ -709,21 +709,21 @@ function P.func(key, env)
     if env.just_committed and repr ~= "BackSpace" and not s_find(repr, "Shift", 1, true) and not s_find(repr, "Control", 1, true) and not s_find(repr, "Alt", 1, true) then
         env.just_committed = false
     end
-    
+
     if repr == "BackSpace" then
         local current_time = (rime_api and rime_api.get_time_ms) and rime_api.get_time_ms() or (os_time() * 1000)
         local is_safe_to_undo = (not ctx:is_composing() or is_predicting)
-        
+
         if is_safe_to_undo and env.undo_stack and #env.undo_stack > 0 then
             -- 延时策略：如果在规定时间内连按退格
             if (current_time - (env.last_action_time or 0)) <= CONFIG.CONTEXT_TIMEOUT_MS then
                 local keys_to_undo = remove(env.undo_stack)
                 local db = get_db(env)
                 for k, v in pairs(keys_to_undo) do
-                    if v == "" then 
+                    if v == "" then
                         if db.erase then db:erase(k) else db:update(k, "") end
-                    else 
-                        db:update(k, v) 
+                    else
+                        db:update(k, v)
                     end
                 end
                 env.last_action_time = current_time
@@ -735,10 +735,10 @@ function P.func(key, env)
         if is_predicting then
             ctx:clear()
             reset_memory_chain(env, "退格强清联想")
-            return 1 
+            return 1
         end
     end
-    
+
     if is_predicting then
         local is_alt_key = (repr == "Tab" or repr == "Alt" or repr == "Alt_L" or repr == "Alt_R")
 
@@ -757,13 +757,13 @@ function P.func(key, env)
             if d == 0 then d = 10 end
             local config = env.engine.schema.config
             local page_size = config:get_int("menu/page_size")
-            
+
             local ctx = env.engine.context
             local comp = ctx.composition
             local seg = (comp and not comp:empty()) and comp:back() or nil
-            
+
             local is_valid_candidate = false
-            
+
             if seg then
                 local current_page = math.floor(seg.selected_index / page_size)
                 local target_index = current_page * page_size + (d - 1)
@@ -811,10 +811,10 @@ function P.func(key, env)
                 return 1
             end
         end
-        
+
         if repr == "Return" then
             ctx:clear()
-            reset_memory_chain(env, "回车键打断预测并输入回车") 
+            reset_memory_chain(env, "回车键打断预测并输入回车")
             return 2
         end
     end
@@ -827,7 +827,7 @@ function P.func(key, env)
         end
         if repr == "Return" or repr == "KP_Enter" or key.keycode == 0x20 then
             reset_memory_chain(env, "非输入状态排版打断")
-            return 2 
+            return 2
         end
         local symbol_map = { ["?"] = "？", ["!"] = "！", [","] = "，", ["."] = "。" }
         if symbol_map[repr] then
@@ -842,10 +842,10 @@ function P.func(key, env)
             remove_predict_candidate(env, cand.text)
             ctx:clear()
             reset_memory_chain(env, "物理按键销毁词条")
-            return 1 
+            return 1
         end
     end
-    return 2 
+    return 2
 end
 
 function P.fini(env)
@@ -856,14 +856,14 @@ end
 
 local T = {}
 function T.init(env)
-    load_config(env) 
+    load_config(env)
     get_db(env)
 end
 
 function T.func(input, seg, env)
     -- 受总开关与联想开关联合控制
     if not env.engine.context:get_option("prediction") or not CONFIG.ENABLE_POST_PREDICT then return end
-    
+
     if s_match(input, "^[›]+$") and pending_cands then
         local count = 0
         for _, c in ipairs(pending_cands) do
@@ -918,7 +918,7 @@ end
 
 function F.func(input, env)
     local ctx = env.engine.context
-    
+
     if not ctx:get_option("prediction") or s_match(ctx.input or "", "^[›]+$") then
         for cand in input:iter() do yield(cand) end
         return
@@ -932,10 +932,10 @@ function F.func(input, env)
     if f_last_commit ~= last_commit then
         f_last_commit = last_commit
         f_reorder_map = nil
-        
+
         local is_context_valid = false
         local u1_len = utf8_len(last_commit) or 0
-        
+
         if #history >= 2 then
             local u0_len = utf8_len(history[#history - 1]) or 0
             if (u0_len + u1_len) >= 3 then
@@ -960,7 +960,7 @@ function F.func(input, env)
 
     local do_reorder = f_reorder_map and next(f_reorder_map)
     local do_classifier = is_after_number and CLASSIFIER_LOOKUP and next(CLASSIFIER_LOOKUP)
-    
+
     local current_input = ctx.input or ""
     local do_fallback = CONFIG.ENABLE_FALLBACK_REORDER and current_input == shared_reverted_code and shared_reverted_code ~= ""
 
@@ -968,7 +968,7 @@ function F.func(input, env)
         do_reorder = false
         do_classifier = false
     end
-    
+
     if (not do_reorder and not do_classifier and not do_fallback) or current_input == "" then
         for cand in input:iter() do yield(cand) end
         return
@@ -1002,7 +1002,7 @@ function F.func(input, env)
     boosted_pool_idx = 0
     local b_cnt = 0
     local n_cnt = 0
-    
+
     local count = 0
     local max_scan = 20
     local target_len = 0
@@ -1012,15 +1012,15 @@ function F.func(input, env)
         count = count + 1
         local text = cand.text or ""
         local current_len = utf8_len(text) or 0
-        
-        if count == 1 then 
-            target_len = current_len 
+
+        if count == 1 then
+            target_len = current_len
             target_end = cand._end
             if cand.type == "sentence" then
                 do_fallback = false
             end
         end
-        
+
         local length_mismatch_stop = false
         if cand._end ~= target_end then
             length_mismatch_stop = true
@@ -1045,10 +1045,10 @@ function F.func(input, env)
         -- 分类与排名逻辑
         local rank = f_reorder_map and f_reorder_map[text]
         local is_classifier = do_classifier and CLASSIFIER_LOOKUP[text]
-        
+
         if (rank or is_classifier) and current_len == target_len then
             local final_rank = rank or 0
-            if is_classifier then final_rank = -1 end 
+            if is_classifier then final_rank = -1 end
             boosted_pool_idx = boosted_pool_idx + 1
             if not boosted_obj_pool[boosted_pool_idx] then
                 boosted_obj_pool[boosted_pool_idx] = {}
@@ -1067,7 +1067,7 @@ function F.func(input, env)
 
     for i = b_cnt + 1, #shared_boosted do shared_boosted[i] = nil end
     for i = n_cnt + 1, #shared_normal do shared_normal[i] = nil end
-    
+
     sort(shared_boosted, stable_sort)
     flush_yield(shared_boosted, b_cnt, shared_normal, n_cnt, do_fallback)
 end
