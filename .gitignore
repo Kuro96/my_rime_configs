@@ -1,14 +1,18 @@
 fonts/
 build/
+.omo/
 *.userdb/
 trash/
 sync/
+*.bin
+*.tabledb
+*.userdb.txt
+lua/predict*
 
 *.ocd2
-user.yaml
-user.yaml
-installation.yaml
-default.custom.yaml
+/user.yaml
+/installation.yaml
+/default.custom.yaml
 
 # computer
 default.yaml
