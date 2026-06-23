@@ -1,0 +1,30 @@
+customization:
+  distribution_code_name: trime
+  distribution_version: "v3.2.16-20240102"
+  generator: "Rime::SwitcherSettings"
+  modified_time: "Thu Jan 25 23:48:52 2024"
+  rime_version: 1.9.0
+patch:
+  "ascii_composer/good_old_caps_lock": true
+  "ascii_composer/switch_key":
+    Caps_Lock: commit_code
+    Control_L: noop
+    Control_R: noop
+    Shift_L: commit_code
+    Shift_R: inline_ascii
+  "menu/page_size": 9
+  schema_list:
+    - {schema: flypy}
+    - {schema: japanese}
+  "switcher/hotkeys":
+    - "Control+grave"
+  "switcher/save_options":
+    - full_shape
+    - ascii_punct
+    - simplification
+    - zh_hans
+    - emoji_suggestion
+  "translator/enable_encoder": true
+  "translator/enable_sentence": true
+  "translator/enable_user_dict": true
+  "translator/encode_commit_history": true
