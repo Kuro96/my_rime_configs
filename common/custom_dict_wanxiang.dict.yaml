@@ -1,0 +1,16 @@
+# Rime dictionary
+# encoding: utf-8
+#
+# Wanxiang selected supplement for flypy.
+# Source: amzxyz/rime-wanxiang, selected jichu + professional tables.
+# Tone marks are stripped in dicts/wanxiang_jichu_plus.dict.yaml so the
+# existing flypy Xiaohe algebra can compile the entries.
+
+---
+name: custom_dict_wanxiang
+version: "2026.06.23"
+sort: by_weight
+use_preset_vocabulary: false
+import_tables:
+  - dicts/wanxiang_jichu_plus
+...
