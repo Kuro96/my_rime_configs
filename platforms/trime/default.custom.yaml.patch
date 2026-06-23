@@ -1,0 +1,16 @@
+--- default.custom.yaml
++++ default.custom.yaml
+@@ -1,9 +1,9 @@
+ customization:
+-  distribution_code_name: rime
+-  distribution_version: ""
++  distribution_code_name: trime
++  distribution_version: "nightly-0-gfdaca80f"
+   generator: "Rime::SwitcherSettings"
+-  modified_time: ""
+-  rime_version: ""
++  modified_time: "Thu May 14 00:37:38 2026"
++  rime_version: 1.13.1
+ patch:
+   "ascii_composer/good_old_caps_lock": true
+   "ascii_composer/switch_key":

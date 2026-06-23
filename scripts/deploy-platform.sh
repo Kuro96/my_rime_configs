@@ -18,11 +18,6 @@ fi
 
 target_dir=$(mkdir -p -- "$target_dir" && CDPATH= cd -- "$target_dir" && pwd)
 
-if [ "$target_dir" = "$repo_dir" ]; then
-  printf 'refusing to deploy into source repo: %s\n' "$repo_dir" >&2
-  exit 2
-fi
-
 copy_tree() {
   src=$1
   if [ -d "$src" ]; then
@@ -30,8 +25,25 @@ copy_tree() {
   fi
 }
 
+deploy_default_custom() {
+  template=$repo_dir/templates/default.custom.yaml
+  default_patch=$platform_dir/default.custom.yaml.patch
+
+  if [ ! -f "$template" ]; then
+    printf 'missing default template: %s\n' "$template" >&2
+    exit 2
+  fi
+
+  cp -- "$template" "$target_dir/default.custom.yaml"
+  if [ -f "$default_patch" ]; then
+    patch --silent --no-backup-if-mismatch -d "$target_dir" default.custom.yaml < "$default_patch"
+  fi
+  rm -f -- "$target_dir/default.custom.yaml.patch"
+}
+
 copy_tree "$repo_dir/common"
 copy_tree "$repo_dir/private"
 copy_tree "$platform_dir"
+deploy_default_custom
 
 printf 'deployed %s Rime config to %s\n' "$platform" "$target_dir"

@@ -1,3 +1,9 @@
+customization:
+  distribution_code_name: rime
+  distribution_version: ""
+  generator: "Rime::SwitcherSettings"
+  modified_time: ""
+  rime_version: ""
 patch:
   "ascii_composer/good_old_caps_lock": true
   "ascii_composer/switch_key":
@@ -9,6 +15,7 @@ patch:
   "menu/page_size": 9
   schema_list:
     - {schema: flypy}
+    - {schema: japanese}
   "switcher/hotkeys":
     - "Control+grave"
   "switcher/save_options":
