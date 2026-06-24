@@ -740,7 +740,29 @@ function P.func(key, env)
     end
 
     if is_predicting then
-        local is_alt_key = (repr == "Tab" or repr == "Alt" or repr == "Alt_L" or repr == "Alt_R")
+        local is_alt_key = (repr == "Alt" or repr == "Alt_L" or repr == "Alt_R")
+
+        if repr == "Tab" then
+            local comp = ctx.composition
+            local seg = (comp and not comp:empty()) and comp:back() or nil
+            local cand = seg and seg:get_candidate_at(seg.selected_index) or nil
+            local text = (cand and cand.type == "predict" and cand.text) or (pending_cands and pending_cands[1] and pending_cands[1].word)
+
+            ctx:clear()
+            if text and text ~= "" then
+                env.engine:commit_text(text)
+            else
+                reset_memory_chain(env, "Tab打断空预测")
+            end
+            return 1
+        end
+
+        if key.keycode == 0x20 then
+            ctx:clear()
+            reset_memory_chain(env, "空格打断联想并上屏空格")
+            env.engine:commit_text(" ")
+            return 1
+        end
 
         -- 根据选词范围分流数字键
         if s_match(repr, "^[0-9]$") or s_match(repr, "^KP_[0-9]$") then
@@ -785,19 +807,7 @@ function P.func(key, env)
 
         if CONFIG.ENABLE_PREDICT_SPACE then
             -- enable_predict_space: true
-            if key.keycode == 0x20 then
-                local current_input = ctx.input or ""
-                local is_predict_placeholder = (current_input ~= "") and s_find(current_input, "^" .. PH_CHAR .. "+$")
-
-                if is_predicting and is_predict_placeholder then
-                    ctx:clear()
-                    reset_memory_chain(env, "空格打断联想并上屏")
-                    env.engine:commit_text(" ")
-                    return 1
-                else
-                    return 2 -- 放行空格，让原生处理
-                end
-            elseif is_alt_key then
+            if is_alt_key then
                 ctx:clear()
                 reset_memory_chain(env, "替身键打断联想")
                 return 1
