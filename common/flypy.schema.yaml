@@ -38,7 +38,7 @@ switches:
     reset: 0
     states: [ 简体 , 繁体 ]
   - name: prediction
-    reset: 1
+    reset: 0
     states: [ 预测关, 预测开 ]
   - name: ascii_punct
     reset: 0
