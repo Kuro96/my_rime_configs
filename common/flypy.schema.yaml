@@ -156,7 +156,7 @@ chaizi:
   tag: chaizi
   dictionary: chaizi
   enable_completion: true
-  prefix: "uu"
+  prefix: "uU"
   tips: 〔拆字〕
 
 reverse_lookup:
@@ -268,7 +268,7 @@ punctuator:
 recognizer:
   import_preset: default
   patterns:
-    chaizi: "uu[a-z]*'?$"
+    chaizi: "uU[a-z]*'?$"
     punct: "^/([0-9]0?|[A-Za-z]+)$"
     email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
     uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
