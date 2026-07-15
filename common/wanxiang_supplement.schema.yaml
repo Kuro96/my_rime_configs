@@ -1,0 +1,18 @@
+schema:
+  schema_id: wanxiang_supplement
+  name: 万象补充词库
+  version: "2026.07.15"
+
+engine:
+  processors:
+    - speller
+  segmentors:
+    - abc_segmentor
+  translators:
+    - script_translator
+
+speller:
+  alphabet: zyxwvutsrqponmlkjihgfedcba
+
+translator:
+  dictionary: custom_dict_wanxiang

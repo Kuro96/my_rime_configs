@@ -2,7 +2,7 @@
 name: chaizi
 version: "2023.12.06"
 sort: by_weight
-use_preset_vocabulary: true
+use_preset_vocabulary: false
 ...
 丁	yijue
 丂	yiyi

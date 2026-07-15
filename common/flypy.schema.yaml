@@ -13,6 +13,8 @@ schema:
     小鹤双拼96魔改版本。
   dependencies:
     - melt_eng # 英文方案
+    - chaizi # 拆字反查
+    - wanxiang_supplement
 
 key_binder:
   import_preset: default
@@ -60,6 +62,7 @@ engine:
   segmentors:
     - ascii_segmentor
     - matcher
+    - affix_segmentor@chaizi
     - abc_segmentor
     - punct_segmentor
     - fallback_segmentor
@@ -74,7 +77,7 @@ engine:
     - lua_translator@number_translator # 金额大小写
     - lua_translator@Chinese_lunar_calendar    # 农历
     - table_translator@melt_eng  # 英文输入（作为子翻译器，优先级需要比原生的低）
-    - reverse_lookup_translator
+    - reverse_lookup_translator@chaizi
   filters:
     - lua_filter@corrector
     - lua_filter@user_predict_filter
@@ -148,6 +151,18 @@ wanxiang_supplement:
   enable_sentence: false
   enable_user_dict: false
   initial_quality: 0.7
+
+chaizi:
+  tag: chaizi
+  dictionary: chaizi
+  enable_completion: true
+  prefix: "uu"
+  tips: 〔拆字〕
+
+reverse_lookup:
+  tags: [chaizi]
+  overwrite_comment: true
+  dictionary: custom_dict.all
 
 user_predict:
   db_name: lua/predict
@@ -253,6 +268,7 @@ punctuator:
 recognizer:
   import_preset: default
   patterns:
+    chaizi: "uu[a-z]*'?$"
     punct: "^/([0-9]0?|[A-Za-z]+)$"
     email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
     uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
